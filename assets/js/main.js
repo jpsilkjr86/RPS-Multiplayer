@@ -1,6 +1,15 @@
 // declare game player objects
-var playerOne = new player("", 1, false, "#playerone-menu", 0, 0, "");
-var playerTwo = new player("", 2, false, "#playertwo-menu", 0, 0, "");
+
+// sets data of player-one and player-two divs as new player objects
+$('#player-one').data(new player("", 1, false, "#player-one", 0, 0, ""));
+$('#player-two').data(new player("", 2, false, "#player-two", 0, 0, ""));
+
+// declares variables playerOne and playerTwo as direct references to respective DOM data
+var playerOne = $('#player-one').data();
+var playerTwo = $('#player-two').data();
+
+playerOne.printStatus('Click here to play as me!');
+playerTwo.printStatus('Click here to play as me!');
 
 
 
@@ -22,28 +31,29 @@ var database = firebase.database();
 
 $(document).ready(function(){
 
-	$('#playerone-status').data('isActive', false)
-						.data('playerNum', 1)
-						.text('Player 1 is available.');
-	$('#playertwo-status').data('isActive', false)
-						.data('playerNum', 2)
-						.text('Player 2 is available.');
+	// sets initial user access
+	setUserAccess('observer_access');
 
-	$('.status-div').on('click', function(){
-		var thisStatus = $(this).data('isActive');
-		var thisPlayerNum = $(this).data('playerNum');
+	$('.player-div').on('click', function(){
+		var activeStatus = $(this).data().isActive;
+		var thisPlayerNum = $(this).data().playerNum;
+		console.log(activeStatus, thisPlayerNum);
 		
-		if (thisStatus === false) {
-			var userName = prompt('Player ' + thisPlayerNum 
-						+ ' is available! Please enter a user name.');
-			$(this).data('name', userName)
-				   .data('isActive', true)
-				   .text('Player ' + thisPlayerNum + ' is ' + userName);
+		// if the user is an observer, i.e. not a player
+		if (getUserAccess() === 'observer_access') {
+			// if the player has not already been selected
+			if (activeStatus === false) {
+				$(this).data('isActive', true);
+				setUserAccess('player' + thisPlayerNum + '_access');
+				var userName = prompt('Please enter a user name.');
+				$(this).data('name', userName)
+					   .data().printStatus('Player ' + thisPlayerNum + ':<br/>' + userName);
 
-		} else {
-			alert('This player has been taken.');
-		}
+			} else {
+				alert('This player is currently being played by another user.');
+			}
+		} else {alert('You have already selected a player.');}
+
+		
 	});
-
-
 });

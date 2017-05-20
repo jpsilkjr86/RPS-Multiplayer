@@ -1,7 +1,8 @@
 // ****************************************** GLOBAL OBJECTS ******************************************
-function player(name, isActive, playerDivId, 
+function player(name, playerNum, isActive, playerDivId, 
 	numWins, numLosses, selectedWeapon) {
 	this.name = name;
+	this.playerNum = playerNum;
 	this.isActive = isActive;
 	this.playerDivId = playerDivId;
 	this.numWins = numWins;
@@ -9,6 +10,9 @@ function player(name, isActive, playerDivId,
 	this.selectedWeapon = selectedWeapon;
 }
 
+player.prototype.printStatus = function(msg) {
+	$(this.playerDivId).html(msg);
+}
 
 
 /* 

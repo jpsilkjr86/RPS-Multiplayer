@@ -1,10 +1,12 @@
-#playerone-status, #playertwo-status {
+#player-one, #player-two {
 	width: 100px;
 	height: 100px;
 	margin: 10px;
-	padding: 10px 5px;
+	padding: 25px 5px;
 	text-align: center;
-	float: right;
 	border: 2px solid #dddddd;
 	border-radius: 3px;
 }
+
+#player-one {float: left;}
+#player-two {float: right;}
