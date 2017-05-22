@@ -23,7 +23,7 @@ function printLeaveGameBtn(playerArg, access) {
 	var btn = $('<button>');
 	btn.addClass('btn btn-info leave-game')
 		.text('Exit Game')
-		.attr('data-playerDivId', playerArg.divId); // data includes main div where player data is stored.
+		.attr('data-databaseKey', playerArg.databaseKey); // to be used later to reference database
 
 	if (access === 'player1_access') {
 		console.log('player1 access');

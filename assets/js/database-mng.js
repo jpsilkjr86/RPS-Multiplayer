@@ -17,14 +17,12 @@ var playerOne = {};
 var playerTwo = {};
 
 
-// database listener for initializing and syncing playerOne in real time
-// database.ref('playerOne').once('value').then(function(snapshot){
+// database listener for all changes in playerOne, syncing and initializing in real time
 database.ref('playerOne').on('value', function(snapshot){
 	// if .isActive property does not exist OR if .isActive is false
 	if (!snapshot.child('isActive').exists() || !snapshot.val().isActive) {
 		// resets to initial player values
-		playerOne = new player("", 1, "playerOne", false, 
-			"#player-one", "#playerone-menu", "#playerone-btn", 0, 0, "");
+		playerOne = resetPlayerValues(1);
 
 		// syncs database with local playerOne object values
 		database.ref('playerOne').set(playerOne);
@@ -45,14 +43,13 @@ database.ref('playerOne').on('value', function(snapshot){
 	printPlayerStatus(playerOne);
 });
 
-// database listener for initializing and syncing playerTwo in real time (same logic as above)
-// database.ref('playerTwo').once('value').then(function(snapshot){
+// database listener for all changes in playerTwo, syncing and 
+// initializing in real time (same logic as above)
 database.ref('playerTwo').on('value', function(snapshot){
 	// if .isActive property does not exist OR if .isActive is false
 	if (!snapshot.child('isActive').exists() || !snapshot.val().isActive) {
 		// resets to initial player values
-		playerTwo = new player("", 2, "playerTwo", false, 
-			"#player-two", "#playertwo-menu", "#playertwo-btn", 0, 0, "");
+		playerTwo = resetPlayerValues(2);
 
 		// syncs database with local playerTwo object values
 		database.ref('playerTwo').set(playerTwo);

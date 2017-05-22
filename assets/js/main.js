@@ -2,7 +2,7 @@
 
 $(document).ready(function(){
 
-	// sets initial user access
+	// sets initial user access to observer
 	setUserAccess('observer_access');
 
 	// click event listener for choosing players
@@ -34,20 +34,16 @@ $(document).ready(function(){
 
 	// click event listener for leave-game buttons
 	$(document).on('click', '.leave-game', function(){
-		// uses data from the button to find the corresponding player div that houses all player data
-		var playerDivId = $(this).attr('data-playerDivId');
+		// uses data from the button to get the player's database key
+		var playerDatabaseKey = $(this).attr('data-databaseKey');
 
-		// declares a new variable to reference the player data
-		var thisPlayer = $(playerDivId).data();
+		// uses the database key to set .isActive to false. Event listener in database-mng.js 
+		// will take it from here.
+		database.ref(playerDatabaseKey).child('isActive').set(false);
 
-		// resets player to initial values
-		thisPlayer = resetPlayerValues(thisPlayer.playerNum);
-
-		// syncs DOM data with reset player values
-		$(playerDivId).data(thisPlayer);
-
-		// syncs firebase database with reset player values
-		database.ref(thisPlayer.databaseKey).set(thisPlayer);
+		// removes anything that may or may not be in menu divs for both players
+		$(playerOne.menuId).empty();
+		$(playerTwo.menuId).empty();
 
 		// resets user access level to observer
 		setUserAccess('observer_access');
