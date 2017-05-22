@@ -10,9 +10,9 @@ function player(name, playerNum, isActive, playerDivId,
 	this.selectedWeapon = selectedWeapon;
 }
 
-player.prototype.printStatus = function(msg) {
-	$(this.playerDivId).html(msg);
-}
+// player.prototype.printStatus = function(msg) {
+// 	$(this.playerDivId).html(msg);
+// }
 
 
 /* 
