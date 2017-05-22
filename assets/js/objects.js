@@ -1,18 +1,15 @@
 // ****************************************** GLOBAL OBJECTS ******************************************
-function player(name, playerNum, isActive, playerDivId, 
+function player(name, playerNum, databaseKey, isActive, divId, 
 	numWins, numLosses, selectedWeapon) {
 	this.name = name;
 	this.playerNum = playerNum;
+	this.databaseKey = databaseKey;
 	this.isActive = isActive;
-	this.playerDivId = playerDivId;
+	this.divId = divId;
 	this.numWins = numWins;
 	this.numLosses = numLosses;
 	this.selectedWeapon = selectedWeapon;
 }
-
-// player.prototype.printStatus = function(msg) {
-// 	$(this.playerDivId).html(msg);
-// }
 
 
 /* 
@@ -20,7 +17,7 @@ function player(name, playerNum, isActive, playerDivId,
 	I. 	User Data {
 			name: name,
 			isActive: isActive,
-			playerDivId: playerDivId,
+			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,
 			selectedWeapon: selectedWeapon
@@ -33,7 +30,7 @@ function player(name, playerNum, isActive, playerDivId,
 	I. 	playerOne {
 			name: name,
 			isActive: isActive,
-			playerDivId: playerDivId,
+			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,
 			selectedWeapon: selectedWeapon
@@ -41,7 +38,7 @@ function player(name, playerNum, isActive, playerDivId,
 	II.	playerTwo {
 			name: name,
 			isActive: isActive,
-			playerDivId: playerDivId,
+			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,
 			selectedWeapon: selectedWeapon

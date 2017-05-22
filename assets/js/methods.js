@@ -9,6 +9,15 @@ function getUserAccess() {
 	return (localStorage.getItem('User Access'));
 }
 
+// prints player status according to whether or not they are active 
+function printPlayerStatus(playerObj) {
+	if (playerObj.isActive) {
+		$(playerObj.divId).html('Player ' + playerObj.playerNum + ':<br/>' + playerObj.name);
+	} else {
+		$(playerObj.divId).html('Player ' + playerObj.playerNum + ' is available!');
+	}
+}
+
 function doesPlayerExist(key) {
 	var answer;
 	database.ref(key).once('value').then(function(snapshot){
@@ -18,6 +27,8 @@ function doesPlayerExist(key) {
 	});
 	return false;
 }
+
+
 
 // 
 function syncWithDatabase(database, key) {
