@@ -1,22 +1,72 @@
 // **************************************** SUBORDINATE FUNCTIONS *****************************************
 // uses local storage to set user access permissions
 function setUserAccess(userAccess) {
-	localStorage.setItem('User Access', userAccess);
+	sessionStorage.setItem('User Access', userAccess);
 }
 
 // returns the user access permission id
 function getUserAccess() {
-	return (localStorage.getItem('User Access'));
+	return (sessionStorage.getItem('User Access'));
 }
 
 // prints player status according to whether or not they are active 
-function printPlayerStatus(playerObj) {
-	if (playerObj.isActive) {
-		$(playerObj.divId).html('Player ' + playerObj.playerNum + ':<br/>' + playerObj.name);
+function printPlayerStatus(playerArg) {
+	if (playerArg.isActive) {
+		$(playerArg.divId).html('Player ' + playerArg.playerNum + ':<br/>' + playerArg.name);
 	} else {
-		$(playerObj.divId).html('Player ' + playerObj.playerNum + ' is available!');
+		$(playerArg.divId).html('Player ' + playerArg.playerNum + ' is available!');
 	}
 }
+
+// adds button for leaving game, visibile only to the user who selected the player
+function printLeaveGameBtn(playerArg, access) {
+	var btn = $('<button>');
+	btn.addClass('btn btn-info leave-game')
+		.text('Exit Game')
+		.attr('data-playerDivId', playerArg.divId); // data includes main div where player data is stored.
+
+	if (access === 'player1_access') {
+		console.log('player1 access');
+		$(playerArg.btnId).append(btn);
+	}
+
+	if (access === 'player2_access') {
+		console.log('player2 access');
+		$(playerArg.btnId).append(btn);
+	}
+}
+
+// 
+function showWeaponsMenu(playerArg) {
+	
+	$(playerArg.menuId).html('Rock<br>Paper<br>Scissors');
+
+	// if (access === 'player1_access') {
+	// 	console.log('player1 access');
+	// 	$(playerArg.menuId).html('Rock<br>Paper<br>Scissors');
+	// }
+
+	// if (access === 'player2_access') {
+	// 	console.log('player2 access');
+	// 	$(playerArg.menuId).html('Rock<br>Paper<br>Scissors');
+	// }
+
+	// if (access === 'observer_access') {
+	// 	$(playerArg.menuId).empty();
+	// }
+}
+
+function resetPlayerValues(playerNum) {
+	if (playerNum == 1) {
+		return (new player("", 1, "playerOne", false, 
+			"#player-one", "#playerone-menu", "#playerone-btn", 0, 0, ""));
+	}
+	if (playerNum == 2) {
+		return (new player("", 2, "playerTwo", false, 
+			"#player-two", "#playertwo-menu", "#playertwo-btn", 0, 0, ""));
+	}
+}
+
 
 function doesPlayerExist(key) {
 	var answer;

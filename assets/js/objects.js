@@ -1,11 +1,13 @@
 // ****************************************** GLOBAL OBJECTS ******************************************
-function player(name, playerNum, databaseKey, isActive, divId, 
-	numWins, numLosses, selectedWeapon) {
+function player(name, playerNum, databaseKey, isActive, 
+	divId, menuId, btnId, numWins, numLosses, selectedWeapon) {
 	this.name = name;
 	this.playerNum = playerNum;
 	this.databaseKey = databaseKey;
 	this.isActive = isActive;
 	this.divId = divId;
+	this.menuId = menuId;
+	this.btnId = btnId;
 	this.numWins = numWins;
 	this.numLosses = numLosses;
 	this.selectedWeapon = selectedWeapon;
