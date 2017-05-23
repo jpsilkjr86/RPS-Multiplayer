@@ -8,7 +8,6 @@ $(document).ready(function(){
 	// click event listener for choosing players
 	$('.player-div').on('click', function(){
 		var thisPlayer = $(this).data();
-		// console.log(thisPlayer.isActive, thisPlayer.playerNum);
 		
 		// if the user is an observer, i.e. not a player
 		if (getUserAccess() === 'observer_access') {
@@ -26,6 +25,7 @@ $(document).ready(function(){
 				printPlayerStatus(thisPlayer);
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn(thisPlayer, getUserAccess());
+
 			} else {
 				alert('This player is currently being played by another user.');
 			}

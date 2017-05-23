@@ -41,6 +41,8 @@ database.ref('playerOne').on('value', function(snapshot){
 
 	// displays player status in its divId
 	printPlayerStatus(playerOne);
+
+	console.log('p1 value changed');
 });
 
 // database listener for all changes in playerTwo, syncing and 
@@ -68,17 +70,26 @@ database.ref('playerTwo').on('value', function(snapshot){
 
 	// displays player status in its divId
 	printPlayerStatus(playerTwo);
+
+	// checks if both players are ready - if so, call displayWeaponsMenu()
+	if (areBothPlayersReady()) {displayWeaponsMenu();}
+
+	console.log('p2 value changed');
 });
 
-// database value event listener for various game events, syncing data in real time
-	database.ref().on('value', function(snapshot){
-		// if both players are active, displays weapons menu to players with visibility 
-		// dependent on their user access (i.e. other player or observer-lever users 
-		// cannot see their menu)
-		if (playerOne.isActive && playerTwo.isActive && getUserAccess()==='player1_access') {
-			showWeaponsMenu(playerOne);
-		}
-		if (playerOne.isActive && playerTwo.isActive && getUserAccess()==='player2_access') {
-			showWeaponsMenu(playerTwo);
-		}
-	});
+// database.ref().on('value', function(snapshot){
+	// if both players are active, displays weapons menu to players with visibility 
+	// dependent on their user access (i.e. other player or observer-lever users 
+	// cannot see their menu)
+	// console.log(snapshot.val());
+	// if (snapshot.val().playerOne.isActive && snapshot.val().playerTwo.isActive) {
+	// 	displayWeaponsMenu();
+	// }
+
+	// if (playerOne.isActive && playerTwo.isActive && getUserAccess()==='player1_access') {
+	// 	displayWeaponsMenu(playerOne);
+	// }
+	// if (playerOne.isActive && playerTwo.isActive && getUserAccess()==='player2_access') {
+	// 	displayWeaponsMenu(playerTwo);
+	// }
+// });

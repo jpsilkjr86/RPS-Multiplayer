@@ -13,7 +13,7 @@
 
 #playerone-menu, #playertwo-menu {
 	width: 100px;
-	height: 100px;
+	min-height: 100px;
 	margin: 10px;
 	padding: 25px 5px;
 	text-align: center;
@@ -23,3 +23,18 @@
 
 #playerone-menu {float: right;}
 #playertwo-menu {float: left;}
+
+.weapon-choice, .observed-weapon-choice {
+	margin: 5px auto;
+	padding: 5px 10px;
+	background-color: #7799ee;
+	border-radius: 10px;
+	color: white;
+	text-shadow: 0 0 3px black;
+	box-shadow: 2px 2px 2px #444444;
+	font-size: 15px;
+}
+
+.weapon-choice:hover, .observed-weapon-choice:hover {
+	background-color: #44ffaa;
+}
