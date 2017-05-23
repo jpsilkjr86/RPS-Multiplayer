@@ -19,21 +19,30 @@ function printPlayerStatus(playerArg) {
 }
 
 // adds button for leaving game, visibile only to the user who selected the player
-function printLeaveGameBtn(playerArg, access) {
+function printLeaveGameBtn(playerArg) {
 	var btn = $('<button>');
 	btn.addClass('btn btn-info leave-game')
-		.text('Exit Game')
-		.attr('data-databaseKey', playerArg.databaseKey); // to be used later to reference database
+		.text('Exit Game');
 
-	if (access === 'player1_access') {
+	if (getUserAccess() === 'player1_access') {
 		console.log('player1 access');
+		btn.addClass('pull-left');
 		$(playerArg.btnId).append(btn);
 	}
 
-	if (access === 'player2_access') {
+	if (getUserAccess() === 'player2_access') {
 		console.log('player2 access');
+		btn.addClass('pull-right');
 		$(playerArg.btnId).append(btn);
 	}
+}
+
+// returns database key according to user access
+function getDatabaseKey() {
+	if (getUserAccess() === 'player1_access')
+		{return 'playerOne';}
+	if (getUserAccess() === 'player2_access')
+		{return 'playerTwo';}
 }
 
 function areBothPlayersReady() {

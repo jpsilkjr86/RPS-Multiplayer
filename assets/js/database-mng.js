@@ -24,6 +24,10 @@ database.ref('playerOne').on('value', function(snapshot){
 		// resets to initial player values
 		playerOne = resetPlayerValues(1);
 
+		// empties menu divs
+		$('#playerone-menu').empty();
+		$('#playertwo-menu').empty();
+
 		// syncs database with local playerOne object values
 		database.ref('playerOne').set(playerOne);
 	}
@@ -52,6 +56,10 @@ database.ref('playerTwo').on('value', function(snapshot){
 	if (!snapshot.child('isActive').exists() || !snapshot.val().isActive) {
 		// resets to initial player values
 		playerTwo = resetPlayerValues(2);
+
+		// empties menu divs
+		$('#playerone-menu').empty();
+		$('#playertwo-menu').empty();
 
 		// syncs database with local playerTwo object values
 		database.ref('playerTwo').set(playerTwo);

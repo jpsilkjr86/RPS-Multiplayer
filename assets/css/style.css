@@ -14,15 +14,17 @@
 #playerone-menu, #playertwo-menu {
 	width: 100px;
 	min-height: 100px;
-	margin: 10px;
-	padding: 25px 5px;
+	margin: 0 10px;
+	padding: 5px;
 	text-align: center;
-	border: 2px solid #ddbbbb;
-	border-radius: 20px;
+	/*border: 2px solid #ddbbbb;
+	border-radius: 20px;*/
 }
 
 #playerone-menu {float: right;}
 #playertwo-menu {float: left;}
+
+.leave-game {margin: 5px 13px;}
 
 .weapon-choice, .observed-weapon-choice {
 	margin: 5px auto;
@@ -35,6 +37,12 @@
 	font-size: 15px;
 }
 
-.weapon-choice:hover, .observed-weapon-choice:hover {
-	background-color: #44ffaa;
+.weapon-choice:hover {
+	background-color: #449944;
+	cursor: pointer;
+}
+
+.weapon-choice:active {
+	background-color: #ff4444;
+	cursor: pointer;
 }

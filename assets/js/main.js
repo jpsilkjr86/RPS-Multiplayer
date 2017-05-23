@@ -24,7 +24,7 @@ $(document).ready(function(){
 				// changes player div text
 				printPlayerStatus(thisPlayer);
 				// adds button for leaving game, visibile only to the user who selected the player
-				printLeaveGameBtn(thisPlayer, getUserAccess());
+				printLeaveGameBtn(thisPlayer);
 
 			} else {
 				alert('This player is currently being played by another user.');
@@ -34,22 +34,22 @@ $(document).ready(function(){
 
 	// click event listener for leave-game buttons
 	$(document).on('click', '.leave-game', function(){
-		// uses data from the button to get the player's database key
-		var playerDatabaseKey = $(this).attr('data-databaseKey');
-
-		// uses the database key to set .isActive to false. Event listener in database-mng.js 
-		// will take it from here.
-		database.ref(playerDatabaseKey).child('isActive').set(false);
-
-		// removes anything that may or may not be in menu divs for both players
-		$(playerOne.menuId).empty();
-		$(playerTwo.menuId).empty();
+		// uses the player's database key to set .isActive to false. Event listeners 
+		// in database-mng.js will take it from here.
+		database.ref(getDatabaseKey()).child('isActive').set(false);
 
 		// resets user access level to observer
 		setUserAccess('observer_access');
 
 		// removes button
 		$(this).remove();
+	});
+
+	// click event listener for weapon-choice
+	$(document).on('click', '.weapon-choice', function(){
+		var choice = $(this).val();
+
+		database.ref(getDatabaseKey()).child('selectedWeapon').set(choice);
 	});
 
 	// for error checking
