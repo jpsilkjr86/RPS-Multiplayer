@@ -1,16 +1,12 @@
 // ****************************************** GLOBAL OBJECTS ******************************************
-function player(name, playerNum, databaseKey, isAvailable, 
-	divId, menuId, btnId, numWins, numLosses, selectedWeapon) {
+function player(name, playerNum, isAvailable, numWins, numLosses, selectedWeapon, doesHaveWeapon) {
 	this.name = name;
 	this.playerNum = playerNum;
-	this.databaseKey = databaseKey;
 	this.isAvailable = isAvailable;
-	this.divId = divId;
-	this.menuId = menuId;
-	this.btnId = btnId;
 	this.numWins = numWins;
 	this.numLosses = numLosses;
 	this.selectedWeapon = selectedWeapon;
+	this.doesHaveWeapon = doesHaveWeapon;
 }
 
 // declares global player variables as empty objects

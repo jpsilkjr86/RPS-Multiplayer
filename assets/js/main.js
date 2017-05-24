@@ -17,21 +17,15 @@ $(document).ready(function(){
 				
 				var nameInput = prompt('Please enter a user name.');
 
-				// overwrites whatever is on the database for 'playerOne' key.
-				// Lumped all the data together in one chunk because there were only two 
-				// changes (name and isAvailable) and I didn't want to send them separately
-				// and thus trigger two separate event listener function handlers.
-				database.ref(thisPlayer.databaseKey).set({
-					name: nameInput, // new value
-					isAvailable: false, // new value
-					playerNum: thisPlayer.playerNum, // the rest are the same as thisPlayer (DOM data)
-					databaseKey: thisPlayer.databaseKey,
-					divId: thisPlayer.divId,
-					menuId: thisPlayer.menuId,
-					btnId: thisPlayer.btnId,
-					numWins: thisPlayer.numWins,
-					numLosses: thisPlayer.numLosses,
-					selectedWeapon: thisPlayer.selectedWeapon
+				// packages changes in one lump of data and sends it to firebase
+				database.ref(getDatabaseKey()).set({
+					name: nameInput,
+					playerNum: thisPlayer.playerNum,
+					isAvailable: false,
+					numWins: 0,
+					numLosses: 0,
+					selectedWeapon: "",
+					doesHaveWeapon: false
 				});
 			} else {
 				alert('This player is currently being played by another user.');
@@ -51,9 +45,21 @@ $(document).ready(function(){
 
 	// click event listener for weapon-choice
 	$(document).on('click', '.weapon-choice', function(){
+		// saves choice in variable
 		var choice = $(this).val();
+		// gets player data from DOM
+		var thisPlayer = $(getPlayerDivId()).data();
 
-		database.ref(getDatabaseKey()).child('selectedWeapon').set(choice);
+		// packages changes in one lump of data and sends it to firebase
+		database.ref(getDatabaseKey()).set({
+			name: thisPlayer.name,
+			playerNum: thisPlayer.playerNum,
+			isAvailable: thisPlayer.isAvailable,
+			numWins: thisPlayer.numWins,
+			numLosses: thisPlayer.numLosses,
+			selectedWeapon: choice,		// <-- changed (new value)
+			doesHaveWeapon: true		// <-- changed (new value)
+		});
 	});
 
 	// for error checking

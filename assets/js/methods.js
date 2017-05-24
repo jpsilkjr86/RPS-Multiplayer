@@ -11,11 +11,8 @@ function getUserAccess() {
 
 // prints player status according to whether or not they are active 
 function printPlayerStatus(playerArg) {
-	if (!playerArg.isAvailable) {
-		$(playerArg.divId).html('Player ' + playerArg.playerNum + ':<br/>' + playerArg.name);
-	} else {
-		$(playerArg.divId).html('Player ' + playerArg.playerNum + ' is available!');
-	}
+	if (playerArg.playerNum == 1) { $('#player-one').html('Player 1:<br/>' + playerArg.name); }
+	if (playerArg.playerNum == 2) { $('#player-two').html('Player 2:<br/>' + playerArg.name); }
 }
 
 // adds button for leaving game, visibile only to the user who selected the player
@@ -39,10 +36,14 @@ function printLeaveGameBtn() {
 
 // returns database key according to user access
 function getDatabaseKey() {
-	if (getUserAccess() === 'player1_access')
-		{return '/activeplayers/playerOne';}
-	if (getUserAccess() === 'player2_access')
-		{return '/activeplayers/playerTwo';}
+	if (getUserAccess() === 'player1_access') {return '/activeplayers/playerOne';}
+	if (getUserAccess() === 'player2_access') {return '/activeplayers/playerTwo';}
+}
+
+// returns player's main div id according to user access
+function getPlayerDivId() {
+	if (getUserAccess() === 'player1_access') {return '#player-one';}
+	if (getUserAccess() === 'player2_access') {return '#player-one';}
 }
 
 // displays weapon choices according to user access permission
@@ -94,15 +95,13 @@ function getWeaponChoicesDiv(access) {
 function resetPlayer(playerNum) {
 	switch (playerNum) {
 		case 1:
-			playerOne = new player("", 1, "/activeplayers/playerOne", true, // resets playerOne
-				"#player-one", "#playerone-menu", "#playerone-btn", 0, 0, "");
+			playerOne = new player("", 1, true, 0, 0, "", false);
 			database.ref('activeplayers/playerOne').set(playerOne); // updates database
 			$('#player-one').data(playerOne); // updates DOM data
 			playerOne = $('#player-one').data(); // ensures variable always references DOM data directly
 			break;
 		case 2:
-			playerTwo = new player("", 2, "/activeplayers/playerTwo", true, // resets playerTwo
-				"#player-two", "#playertwo-menu", "#playertwo-btn", 0, 0, "");
+			playerTwo = new player("", 2, true, 0, 0, "", false);
 			database.ref('activeplayers/playerTwo').set(playerTwo); // updates database
 			$('#player-two').data(playerTwo); // updates DOM data
 			playerTwo = $('#player-two').data(); // ensures variable always references DOM data directly
