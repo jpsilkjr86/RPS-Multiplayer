@@ -39,6 +39,9 @@ $(document).ready(function(){
 		// in database-mng.js will take it from there.
 		database.ref(getDatabaseKey()).child('isAvailable').set(true);
 
+		// removes button from DOM
+		$(getPlayerBtnId()).empty();
+
 		// resets user access level to observer
 		setUserAccess('observer_access');
 	});
@@ -60,6 +63,9 @@ $(document).ready(function(){
 			selectedWeapon: choice,		// <-- changed (new value)
 			doesHaveWeapon: true		// <-- changed (new value)
 		});
+
+		// empties the weapon menu div on the DOM
+		$(getPlayerMenuId()).empty();
 	});
 
 	// for error checking

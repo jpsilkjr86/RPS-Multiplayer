@@ -16,10 +16,13 @@ var database = firebase.database();
 // in database, syncing and initializing in real time
 database.ref('/activeplayers/').on('value', function(snapshot){
 	
-	// declare p1s as shorthand for "Player One Snapshot"
+	// declare p1s and p2s as shorthands for "Player 1 Snapshot" & "Player 2 Snapshot"
 	var p1s = snapshot.child('playerOne');
-	// declare p2s as shorthand for "Player Two Snapshot"
 	var p2s = snapshot.child('playerTwo');
+
+	// declare p1sv and p2sv as shorthands for "Player 1 Snapshot .val()" & "Player 2 Snapshot .val()"
+	var p1sv = p1s.val();
+	var p2sv = p2s.val();
 
 	// if either playerOne or playerTwo doesn't exist in the database
 	if (!p1s.exists() || !p2s.exists()) {
@@ -34,10 +37,10 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 	else { // wraps below code in an 'else' to avoid redundancy with above code
 		
 		// if playerOne has changed its availability status
-		if (p1s.child('isAvailable').val() !== playerOne.isAvailable) {
+		if (p1sv.isAvailable !== playerOne.isAvailable) {
 			
 			// if playerOne has become available, reset the values.
-			if (p1s.child('isAvailable').val()) {
+			if (p1sv.isAvailable) {
 				resetPlayer(1);
 				resetDOMText('p1main');
 				resetDOMText('p1menu');
@@ -45,8 +48,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				console.log('reset p1');
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
-				// sets playerOne equal to the snapshot
-				playerOne = p1s.val();
+				// sets playerOne equal to the snapshot value
+				playerOne = p1sv;
 				console.log('p1 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
@@ -62,7 +65,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				printPlayerStatus(playerOne);
 
 				// if playerTwo has also been selected, display weapons
-				if (!p2s.child('isAvailable').val()) {
+				if (!p2sv.isAvailable) {
 					console.log('displayWeaponsMenu p1');
 					displayWeaponsMenu();
 				}
@@ -70,10 +73,10 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 		}
 		
 		// if playerTwo has changed its availability status
-		if (p2s.child('isAvailable').val() !== playerTwo.isAvailable) {
+		if (p2sv.isAvailable !== playerTwo.isAvailable) {
 			
 			// if playerTwo has become available, reset the values.
-			if (p2s.child('isAvailable').val()) {
+			if (p2sv.isAvailable) {
 				resetPlayer(2);
 				resetDOMText('p2main');
 				resetDOMText('p2menu');
@@ -82,7 +85,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
 				// sets playerTwo equal to the snapshot
-				playerTwo = p2s.val();
+				playerTwo = p2sv;
 				console.log('p2 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
@@ -98,57 +101,55 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				printPlayerStatus(playerTwo);
 
 				// if playerOne has also been selected, display weapons
-				if (!p1s.child('isAvailable').val()) {
+				if (!p1sv.isAvailable) {
 					console.log('displayWeaponsMenu p2');
 					displayWeaponsMenu();
 				}
 			}	
 		}
 
-		// conditions for checking result after both players have selected weapons
-		if (p1s.child('doesHaveWeapon').val() == true 
-			&& p2s.child('doesHaveWeapon').val() == true)	{
-			// sets .doesHaveWeapon to false right away so the functionality 
-			// won't accidentally get handled twice.
+		if (p1sv.doesHaveWeapon === true) {resetDOMText('p1menu'); console.log('p1:', p1sv.selectedWeapon);}
+		if (p2sv.doesHaveWeapon === true) {resetDOMText('p2menu'); console.log('p2:', p2sv.selectedWeapon);}
+
+		// conditions for checking game result after both players have selected weapons
+		if (p1sv.doesHaveWeapon === true && p2sv.doesHaveWeapon === true )	{
+			// saves these as more manageable variables
+			var p1choice = p1sv.selectedWeapon;	var p2choice = p2sv.selectedWeapon;			
+			var p1wins = p1sv.numWins;			var p2wins = p1sv.numWins;
+			var p1losses = p1sv.numLosses;		var p2losses = p2sv.numLosses;
+
+			// resets database values
 			database.ref('/activeplayers/playerOne').child('doesHaveWeapon').set(false);
 			database.ref('/activeplayers/playerTwo').child('doesHaveWeapon').set(false);
-			// saves these as more manageable variables
-			var p1choice = p1s.child('selectedWeapon').val();
-			var p2choice = p2s.child('selectedWeapon').val();
-			var p1wins = p1s.child('numWins').val();
-			var p2wins = p2s.child('numWins').val();
-
+			database.ref('/activeplayers/playerOne').child('selectedWeapon').set('');
+			database.ref('/activeplayers/playerTwo').child('selectedWeapon').set('');
+			
+			// check for tie first
 			if (p1choice == p2choice) {
-				$('#result-text').html("It's a tie!");
+				displayResult("It's a tie!");
 			} else {
-				// win condition for playerOne, loss for playerTwo
-				if ((p1choice == 'rock' && p2choice == 'scissors') 
-				 || (p1choice == 'scissors' && p2choice == 'paper') 
-				 || (p1choice == 'paper' && p2choice == 'rock')) {
-					// display win result
-					$('#result-text').html(playerOne.name + ' wins!');
+				// if player 1 wins, player 2 loses
+				if (doesXWinYLose(p1choice, p2choice)) {
 					// increments wins and losses
 					p1wins++; p2losses++;
 					// changes number of wins and losses in database
 					database.ref('/activeplayers/playerOne').child('numWins').set(p1wins);
 					database.ref('/activeplayers/playerTwo').child('numLosses').set(p2losses);
-				}
-
-				// win condition for playerTwo, loss for playerOne
-				if ((p2choice == 'rock' && p1choice == 'scissors') 
-				 || (p2choice == 'scissors' && p1choice == 'paper') 
-				 || (p2choice == 'paper' && p1choice == 'rock')) {
 					// display win result
-					$('#result-text').html(playerTwo.name + ' wins!');
+					displayResult(p1sv.name + ' wins!');
+				} 
+				else { // if player 2 wins, player 1 loses
 					// increments wins and losses
 					p2wins++; p1losses++;
 					// changes number of wins and losses in database
 					database.ref('/activeplayers/playerTwo').child('numWins').set(p2wins);
 					database.ref('/activeplayers/playerOne').child('numLosses').set(p1losses);
+					// display win result
+					displayResult(p2sv.name + ' wins!');
 				}
 			} // end of else
 
-			// always do this after checking results of 
+			// always do this after checking and displaying game results
 			displayWeaponsMenu();
 		} // end of 'if' condition checking results.
 		

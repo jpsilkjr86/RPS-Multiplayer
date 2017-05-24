@@ -24,14 +24,14 @@ function printLeaveGameBtn() {
 	if (getUserAccess() === 'player1_access') {
 		console.log('player1 access');
 		btn.addClass('pull-left');
-		$('#playerone-btn').html(btn);
 	}
 
 	if (getUserAccess() === 'player2_access') {
 		console.log('player2 access');
 		btn.addClass('pull-right');
-		$('#playertwo-btn').html(btn);
 	}
+	
+	$(getPlayerBtnId()).html(btn);
 }
 
 // returns database key according to user access
@@ -43,7 +43,19 @@ function getDatabaseKey() {
 // returns player's main div id according to user access
 function getPlayerDivId() {
 	if (getUserAccess() === 'player1_access') {return '#player-one';}
-	if (getUserAccess() === 'player2_access') {return '#player-one';}
+	if (getUserAccess() === 'player2_access') {return '#player-two';}
+}
+
+// returns player's weapons menu div id according to user access
+function getPlayerMenuId() {
+	if (getUserAccess() === 'player1_access') {return '#playerone-menu';}
+	if (getUserAccess() === 'player2_access') {return '#playertwo-menu';}
+}
+
+// returns player's button div id according to user access
+function getPlayerBtnId() {
+	if (getUserAccess() === 'player1_access') {return '#playerone-btn';}
+	if (getUserAccess() === 'player2_access') {return '#playertwo-btn';}
 }
 
 // displays weapon choices according to user access permission
@@ -130,4 +142,19 @@ function resetDOMText(arg) {
 			$('#playertwo-menu').empty();
 			break;
 	}
+}
+
+function doesXWinYLose(x, y) {
+	if ((x == 'rock' 	 && 	y == 'scissors') 
+	 || (x == 'scissors' && 	y == 'paper') 
+	 || (x == 'paper' 	 && 	y == 'rock')) {return true;}
+	else {return false;}
+}
+
+function displayResult(str) {
+	// displays result for set time and then clears it from DOM
+	$('#result-text').html(str);
+	setTimeout(function(){
+		$('#result-text').empty();
+	}, 4000);
 }
