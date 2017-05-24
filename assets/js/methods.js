@@ -11,7 +11,7 @@ function getUserAccess() {
 
 // prints player status according to whether or not they are active 
 function printPlayerStatus(playerArg) {
-	if (playerArg.isAvailable) {
+	if (!playerArg.isAvailable) {
 		$(playerArg.divId).html('Player ' + playerArg.playerNum + ':<br/>' + playerArg.name);
 	} else {
 		$(playerArg.divId).html('Player ' + playerArg.playerNum + ' is available!');
@@ -44,21 +44,6 @@ function getDatabaseKey() {
 	if (getUserAccess() === 'player2_access')
 		{return '/activeplayers/playerTwo';}
 }
-
-function areBothPlayersReady() {
-	if (playerOne.isAvailable && playerTwo.isAvailable) {return true;}
-	else {return false;}
-}
-
-// function areBothPlayersReady() {
-// 	database.ref('playerOne').child('isActive').once('value').then(function(snapshot){
-// 		var playerOneReady = playerOne.isActive;
-// 	});
-// 	database.ref('playerTwo').child('isActive').once('value').then(function(snapshot){
-// 		var playerTwoReady = playerTwo.isActive;
-// 	});
-// 	console.log (playerOneReady, playerTwoReady);
-// }
 
 // displays weapon choices according to user access permission
 function displayWeaponsMenu() {
@@ -119,25 +104,6 @@ function resetPlayer(playerNum) {
 	}
 }
 
-// // declares player object with initial values, writes it to the database and returns the values.
-// function resetPlayer(playerNum) {
-// 	var initialPlayerValues = {};
-// 	switch (playerNum) {
-// 		case 1:
-// 			initialPlayerValues = new player("", 1, "/activeplayers/playerOne", true, 
-// 				"#player-one", "#playerone-menu", "#playerone-btn", 0, 0, "");
-// 			database.ref('activeplayers/playerOne').set(initialPlayerValues);
-// 			return initialPlayerValues;
-// 			break;
-// 		case 2:
-// 			initialPlayerValues = new player("", 2, "/activeplayers/playerTwo", true, 
-// 				"#player-two", "#playertwo-menu", "#playertwo-btn", 0, 0, "");
-// 			database.ref('activeplayers/playerTwo').set(initialPlayerValues);
-// 			return initialPlayerValues;
-// 			break;
-// 	}
-// }
-
 function resetDOMText(arg) {
 	switch (arg) {
 		case 'all':
@@ -159,25 +125,4 @@ function resetDOMText(arg) {
 			$('#playertwo-menu').empty();
 			break;
 	}
-}
-
-function resetPlayerValues(playerNum) {
-	if (playerNum == 1) {
-		return (new player("", 1, "playerOne", true, 
-			"#player-one", "#playerone-menu", "#playerone-btn", 0, 0, ""));
-	}
-	if (playerNum == 2) {
-		return (new player("", 2, "playerTwo", true, 
-			"#player-two", "#playertwo-menu", "#playertwo-btn", 0, 0, ""));
-	}
-}
-
-// 
-function syncWithDatabase(database, key) {
-	var data = {};
-	database.ref(key).once('value').then(function(snapshot){
-		data = snapshot.val();
-		console.log(data);
-	});
-	return data;
 }

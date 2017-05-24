@@ -13,18 +13,36 @@ $(document).ready(function(){
 		if (getUserAccess() === 'observer_access') {
 			
 			if (thisPlayer.isAvailable) {
-				// sets isAvailable to false
-				thisPlayer.isAvailable = false;
 				// sets user access in local storage 
 				setUserAccess('player' + thisPlayer.playerNum + '_access');
-				// gets user name
-				thisPlayer.name = prompt('Please enter a user name.');
-				// overwrites whatever is on the database for 'playerOne' key as the selected player
-				database.ref(thisPlayer.databaseKey).set(thisPlayer);
+				
+				var nameInput = prompt('Please enter a user name.');
+
+				// overwrites whatever is on the database for 'playerOne' key.
+				// Lumped all the data together in one chunk because there were only two 
+				// changes (name and isAvailable) and I didn't want to send them separately,
+				// thus triggering two event listener functions to perform database queries.
+				database.ref(thisPlayer.databaseKey).set({
+					name: nameInput,
+					isAvailable: false,
+					playerNum: thisPlayer.playerNum,
+					databaseKey: thisPlayer.databaseKey,
+					divId: thisPlayer.divId,
+					menuId: thisPlayer.menuId,
+					btnId: thisPlayer.btnId,
+					numWins: thisPlayer.numWins,
+					numLosses: thisPlayer.numLosses,
+					selectedWeapon: thisPlayer.selectedWeapon
+				});
+				
 				// changes player div text
-				printPlayerStatus(thisPlayer);
+				// printPlayerStatus(thisPlayer);
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn(thisPlayer);
+
+				// overwrites whatever is on the database for 'playerOne' key as the selected player
+				// database.ref(thisPlayer.databaseKey).set(thisPlayer);
+				// database.ref(thisPlayer.databaseKey).child('isAvailable').set(false);
 
 			} else {
 				alert('This player is currently being played by another user.');
