@@ -8,7 +8,6 @@ $(document).ready(function(){
 	// click event listener for choosing players
 	$('.player-div').on('click', function(){
 		var thisPlayer = $(this).data();
-		console.log(thisPlayer);
 		// if the user is an observer, i.e. not a player
 		if (getUserAccess() === 'observer_access') {
 			
@@ -20,12 +19,12 @@ $(document).ready(function(){
 
 				// overwrites whatever is on the database for 'playerOne' key.
 				// Lumped all the data together in one chunk because there were only two 
-				// changes (name and isAvailable) and I didn't want to send them separately,
-				// thus triggering two event listener functions to perform database queries.
+				// changes (name and isAvailable) and I didn't want to send them separately
+				// and thus trigger two separate event listener function handlers.
 				database.ref(thisPlayer.databaseKey).set({
-					name: nameInput,
-					isAvailable: false,
-					playerNum: thisPlayer.playerNum,
+					name: nameInput, // new value
+					isAvailable: false, // new value
+					playerNum: thisPlayer.playerNum, // the rest are the same as thisPlayer (DOM data)
 					databaseKey: thisPlayer.databaseKey,
 					divId: thisPlayer.divId,
 					menuId: thisPlayer.menuId,
@@ -34,16 +33,6 @@ $(document).ready(function(){
 					numLosses: thisPlayer.numLosses,
 					selectedWeapon: thisPlayer.selectedWeapon
 				});
-				
-				// changes player div text
-				// printPlayerStatus(thisPlayer);
-				// adds button for leaving game, visibile only to the user who selected the player
-				printLeaveGameBtn(thisPlayer);
-
-				// overwrites whatever is on the database for 'playerOne' key as the selected player
-				// database.ref(thisPlayer.databaseKey).set(thisPlayer);
-				// database.ref(thisPlayer.databaseKey).child('isAvailable').set(false);
-
 			} else {
 				alert('This player is currently being played by another user.');
 			}
@@ -58,9 +47,6 @@ $(document).ready(function(){
 
 		// resets user access level to observer
 		setUserAccess('observer_access');
-
-		// removes button
-		$(this).remove();
 	});
 
 	// click event listener for weapon-choice
@@ -92,6 +78,7 @@ $(document).ready(function(){
 		if (e.keyCode === 96) {
 			database.ref('/activeplayers/playerOne').set({});
 			database.ref('/activeplayers/playerTwo').set({});
+			setUserAccess('observer_access');
 		}
 
 		if (e.key == '/') {

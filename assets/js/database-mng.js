@@ -25,6 +25,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 	if (!p1s.exists() || !p2s.exists()) {
 		// resets DOM to its initial state by emptying out various divs
 		resetDOMText('all');
+		$('#playerone-btn').empty(); $('#playertwo-btn').empty();
 		// resets playerOne and playerTwo to their initial values, both locally and in database
 		resetPlayer(1);
 		resetPlayer(2);
@@ -40,12 +41,16 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				resetPlayer(1);
 				resetDOMText('p1main');
 				resetDOMText('p1menu');
+				$('#playerone-btn').empty();
 				console.log('reset p1');
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
 				// sets playerOne equal to the snapshot
 				playerOne = p1s.val();
 				console.log('p1 value updated');
+
+				// adds button for leaving game, visibile only to the user who selected the player
+				printLeaveGameBtn();
 
 				// syncs updated player data with player-one div
 				$('#player-one').data(playerOne);
@@ -72,12 +77,16 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				resetPlayer(2);
 				resetDOMText('p2main');
 				resetDOMText('p2menu');
+				$('#playertwo-btn').empty();
 				console.log('reset p2');
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
 				// sets playerTwo equal to the snapshot
 				playerTwo = p2s.val();
 				console.log('p2 value updated');
+
+				// adds button for leaving game, visibile only to the user who selected the player
+				printLeaveGameBtn();
 
 				// syncs updated player data with player-two div
 				$('#player-two').data(playerTwo);

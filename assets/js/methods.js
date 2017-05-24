@@ -19,7 +19,7 @@ function printPlayerStatus(playerArg) {
 }
 
 // adds button for leaving game, visibile only to the user who selected the player
-function printLeaveGameBtn(playerArg) {
+function printLeaveGameBtn() {
 	var btn = $('<button>');
 	btn.addClass('btn btn-info leave-game')
 		.text('Exit Game');
@@ -27,13 +27,13 @@ function printLeaveGameBtn(playerArg) {
 	if (getUserAccess() === 'player1_access') {
 		console.log('player1 access');
 		btn.addClass('pull-left');
-		$(playerArg.btnId).append(btn);
+		$('#playerone-btn').html(btn);
 	}
 
 	if (getUserAccess() === 'player2_access') {
 		console.log('player2 access');
 		btn.addClass('pull-right');
-		$(playerArg.btnId).append(btn);
+		$('#playertwo-btn').html(btn);
 	}
 }
 
@@ -47,40 +47,46 @@ function getDatabaseKey() {
 
 // displays weapon choices according to user access permission
 function displayWeaponsMenu() {
-	// creates div that contains all choices
-	var weaponChoices = $('<div>');
-
-	// creates divs for rock, paper and scissors
-	var rock = $('<div>');
-	rock.addClass('weapon-choice').text('Rock').val('Rock').appendTo(weaponChoices);
-
-	var paper = $('<div>');
-	paper.addClass('weapon-choice').text('Paper').val('Paper').appendTo(weaponChoices);
-
-	var scissors = $('<div>');
-	scissors.addClass('weapon-choice').text('Scissors').val('Scissors').appendTo(weaponChoices);
-
 	// conditionals for displaying data according to user access permissions
 	switch(getUserAccess()) {
 		case 'player1_access':
-			console.log('player1 access');
-			$(playerOne.menuId).html(weaponChoices);
+			$('#playerone-menu').html(getWeaponChoicesDiv('player'));
 			break;
 		case 'player2_access':
-			console.log('player2 access');
-			$(playerTwo.menuId).html(weaponChoices);
+			$('#playertwo-menu').html(getWeaponChoicesDiv('player'));
 			break;
 		case 'observer_access':
-		// changes class to observed-weapon-choice to allow observers to see the menus displayed
-		// but without the ability to utilize the click event listener attached to .weapon-choice 
-		// class. also to make duplicates of DOM elements I read that I need to use clone().
-			var weaponChoicesClone = $('<div>');
-			rock.attr('class', 'observed-weapon-choice').clone().appendTo(weaponChoicesClone);
-			paper.attr('class', 'observed-weapon-choice').clone().appendTo(weaponChoicesClone);
-			scissors.attr('class', 'observed-weapon-choice').clone().appendTo(weaponChoicesClone);
-			$(playerOne.menuId).html(weaponChoices);
-			$(playerTwo.menuId).html(weaponChoicesClone);
+			$('#playerone-menu').html(getWeaponChoicesDiv('observer'));
+			$('#playertwo-menu').html(getWeaponChoicesDiv('observer'));
 	}
+}
+
+function getWeaponChoicesDiv(access) {
+	// creates divs for rock, paper and scissors and appends them to weaponChoicesDiv
+	var weaponChoicesDiv = $('<div>');
+
+	var rock = $('<div>');
+	rock.text('Rock').val('Rock').appendTo(weaponChoicesDiv);
+
+	var paper = $('<div>');
+	paper.text('Paper').val('Paper').appendTo(weaponChoicesDiv);
+
+	var scissors = $('<div>');
+	scissors.text('Scissors').val('Scissors').appendTo(weaponChoicesDiv);
+
+	switch (access) {
+		case 'player':
+			rock.addClass('weapon-choice');
+			paper.addClass('weapon-choice');
+			scissors.addClass('weapon-choice');
+			break;
+		case 'observer':
+			rock.addClass('observed-weapon-choice');
+			paper.addClass('observed-weapon-choice');
+			scissors.addClass('observed-weapon-choice');
+			break;
+	}
+	return weaponChoicesDiv;
 }
 
 // resets global playerOne and playerTwo objects to initial values, resets DOM data, syncs variables
