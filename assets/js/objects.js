@@ -1,10 +1,10 @@
 // ****************************************** GLOBAL OBJECTS ******************************************
-function player(name, playerNum, databaseKey, isActive, 
+function player(name, playerNum, databaseKey, isAvailable, 
 	divId, menuId, btnId, numWins, numLosses, selectedWeapon) {
 	this.name = name;
 	this.playerNum = playerNum;
 	this.databaseKey = databaseKey;
-	this.isActive = isActive;
+	this.isAvailable = isAvailable;
 	this.divId = divId;
 	this.menuId = menuId;
 	this.btnId = btnId;
@@ -13,12 +13,15 @@ function player(name, playerNum, databaseKey, isActive,
 	this.selectedWeapon = selectedWeapon;
 }
 
+// declares global player variables as empty objects
+var playerOne = {};
+var playerTwo = {};
 
 /* 
 
 	I. 	User Data {
 			name: name,
-			isActive: isActive,
+			isAvailable: isAvailable,
 			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,
@@ -31,7 +34,7 @@ function player(name, playerNum, databaseKey, isActive,
 	Local Object Data
 	I. 	playerOne {
 			name: name,
-			isActive: isActive,
+			isAvailable: isAvailable,
 			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,
@@ -39,7 +42,7 @@ function player(name, playerNum, databaseKey, isActive,
 		}
 	II.	playerTwo {
 			name: name,
-			isActive: isActive,
+			isAvailable: isAvailable,
 			divId: divId,
 			numWins: numWins,
 			numLosses: numLosses,

@@ -8,13 +8,13 @@ $(document).ready(function(){
 	// click event listener for choosing players
 	$('.player-div').on('click', function(){
 		var thisPlayer = $(this).data();
-		
+		console.log(thisPlayer);
 		// if the user is an observer, i.e. not a player
 		if (getUserAccess() === 'observer_access') {
-			// if the player has not already been selected
-			if (!thisPlayer.isActive) {
-				// sets isActive to true
-				thisPlayer.isActive = true;
+			
+			if (thisPlayer.isAvailable) {
+				// sets isAvailable to false
+				thisPlayer.isAvailable = false;
 				// sets user access in local storage 
 				setUserAccess('player' + thisPlayer.playerNum + '_access');
 				// gets user name
@@ -34,9 +34,9 @@ $(document).ready(function(){
 
 	// click event listener for leave-game buttons
 	$(document).on('click', '.leave-game', function(){
-		// uses the player's database key to set .isActive to false. Event listeners 
-		// in database-mng.js will take it from here.
-		database.ref(getDatabaseKey()).child('isActive').set(false);
+		// uses the player's database key to set .isAvailable to true. Event listeners 
+		// in database-mng.js will take it from there.
+		database.ref(getDatabaseKey()).child('isAvailable').set(true);
 
 		// resets user access level to observer
 		setUserAccess('observer_access');
@@ -59,7 +59,7 @@ $(document).ready(function(){
 		if (e.key == '0') {database.ref('playerOne').set({});}
 
 		if (e.key == 'q') {
-			database.ref('playerOne').once('value').then(function(snapshot){
+			database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
 				console.log('database:', snapshot.val());
 			});
 			console.log('local vars:', playerOne, playerTwo);
@@ -72,12 +72,18 @@ $(document).ready(function(){
 		}
 
 		if (e.keyCode === 96) {
-			database.ref('playerOne').set({});
-			database.ref('playerTwo').set({});
+			database.ref('/activeplayers/playerOne').set({});
+			database.ref('/activeplayers/playerTwo').set({});
 		}
 
 		if (e.key == '/') {
 			console.log('Your access level is:', getUserAccess());
 		}
+
+		if (e.key == '=') {
+			database.ref('activeplayers/playerOne').child('isAvailable').set(false);
+			console.log('set true');
+		}
+
 	});
 }); // end of document ready
