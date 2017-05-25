@@ -52,7 +52,9 @@ $(document).ready(function(){
 		var choice = $(this).val();
 		// gets player data from DOM
 		var thisPlayer = $(getPlayerDivId()).data();
-
+		// changes html on the weapon menu div so that user can't choose more than one weapon
+		displayTextOnMenu(thisPlayer.playerNum, 'Weapon selected!');
+		
 		// packages changes in one lump of data and sends it to firebase
 		database.ref(getDatabaseKey()).set({
 			name: thisPlayer.name,
@@ -63,9 +65,6 @@ $(document).ready(function(){
 			selectedWeapon: choice,		// <-- changed (new value)
 			doesHaveWeapon: true		// <-- changed (new value)
 		});
-
-		// empties the weapon menu div on the DOM
-		$(getPlayerMenuId()).empty();
 	});
 
 	// for error checking
@@ -76,6 +75,9 @@ $(document).ready(function(){
 
 		if (e.key == 'q') {
 			database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
+				console.log('database:', snapshot.val());
+			});
+			database.ref('/activeplayers/playerTwo').once('value').then(function(snapshot){
 				console.log('database:', snapshot.val());
 			});
 			console.log('local vars:', playerOne, playerTwo);

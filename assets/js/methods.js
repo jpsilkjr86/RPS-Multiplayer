@@ -6,8 +6,60 @@ function setUserAccess(userAccess) {
 
 // returns the user access permission id
 function getUserAccess() {
+	console.log(sessionStorage.getItem('User Access'));
 	return (sessionStorage.getItem('User Access'));
 }
+
+// resets players to initial values
+function resetPlayer(playerNum) {
+	if (playerNum == 1) {return new player("", 1, true, 0, 0, "", false);}
+	if (playerNum == 2) {return new player("", 2, true, 0, 0, "", false);}
+}
+
+// syncs object data from database with DOM. takes an array to allow flexibility in number of arguments.
+function syncDOMData(playerAry) {
+	for (i = 0; i < playerAry.length; i++) {
+		if (playerAry[i].playerNum == 1) {$('#player-one').data(playerAry[i]);}
+		if (playerAry[i].playerNum == 2) {$('#player-two').data(playerAry[i]);}
+	}
+}
+
+// updates database with new player values. takes an array to allow flexibility in number of arguments.
+function updatePlayersOnFirebase(playerAry) {
+	for (i = 0; i < playerAry.length; i++) {
+		if (playerAry[i].playerNum == 1) {database.ref('activeplayers/playerOne').set(playerAry[i]);}
+		if (playerAry[i].playerNum == 2) {database.ref('activeplayers/playerTwo').set(playerAry[i]);}
+	}
+}
+
+// clears or resets DOM data according to arry of string arguments.
+function resetDOM(ary) {
+	// if the argument is an array with initial value 'all', declare array as all cases.
+	if (ary[0] == 'all') {ary = ['p1main', 'p2main', 'p1menu', 'p2menu', 'p1btn', 'p2btn'];}
+	// for loop that iterates through array and performs switch cases
+	for (i = 0; i < ary.length; i++) {
+		switch (ary[i]) {
+			case 'p1main':
+				$('#player-one').html('Player 1 is available!');
+				break;
+			case 'p2main':
+				$('#player-two').html('Player 2 is available!');
+				break;
+			case 'p1menu':
+				$('#playerone-menu').empty();
+				break;
+			case 'p2menu':
+				$('#playertwo-menu').empty();
+				break;
+			case 'p1btn':
+				$('#playerone-btn').empty();
+				break;
+			case 'p2btn':
+				$('#playertwo-btn').empty();
+				break;
+		} // end of switch
+	} // end of for loop
+} // end of function
 
 // prints player status according to whether or not they are active 
 function printPlayerStatus(playerArg) {
@@ -63,17 +115,21 @@ function displayWeaponsMenu() {
 	// conditionals for displaying data according to user access permissions
 	switch(getUserAccess()) {
 		case 'player1_access':
+			console.log('display p1 menu');
 			$('#playerone-menu').html(getWeaponChoicesDiv('player'));
 			break;
 		case 'player2_access':
+			console.log('display p2 menu');
 			$('#playertwo-menu').html(getWeaponChoicesDiv('player'));
 			break;
 		case 'observer_access':
+			console.log('display ob menus');
 			$('#playerone-menu').html(getWeaponChoicesDiv('observer'));
 			$('#playertwo-menu').html(getWeaponChoicesDiv('observer'));
 	}
 }
 
+// returns a div object with rock, paper and scissors menu
 function getWeaponChoicesDiv(access) {
 	// creates divs for rock, paper and scissors and appends them to weaponChoicesDiv
 	var weaponChoicesDiv = $('<div>');
@@ -102,59 +158,49 @@ function getWeaponChoicesDiv(access) {
 	return weaponChoicesDiv;
 }
 
-// resets global playerOne and playerTwo objects to initial values, resets DOM data, syncs variables
-// with DOM data, and writes playerOne and playerTwo to the database
-function resetPlayer(playerNum) {
-	switch (playerNum) {
-		case 1:
-			playerOne = new player("", 1, true, 0, 0, "", false);
-			database.ref('activeplayers/playerOne').set(playerOne); // updates database
-			$('#player-one').data(playerOne); // updates DOM data
-			playerOne = $('#player-one').data(); // ensures variable always references DOM data directly
-			break;
-		case 2:
-			playerTwo = new player("", 2, true, 0, 0, "", false);
-			database.ref('activeplayers/playerTwo').set(playerTwo); // updates database
-			$('#player-two').data(playerTwo); // updates DOM data
-			playerTwo = $('#player-two').data(); // ensures variable always references DOM data directly
-			break;
-	}
-}
-
-function resetDOMText(arg) {
-	switch (arg) {
-		case 'all':
-			$('#player-one').html('Player 1 is available!');
-			$('#player-two').html('Player 2 is available!');
-			$('#playerone-menu').empty();
-			$('#playertwo-menu').empty();
-			break;
-		case 'p1main':
-			$('#player-one').html('Player 1 is available!');
-			break;
-		case 'p2main':
-			$('#player-two').html('Player 2 is available!');
-			break;
-		case 'p1menu':
-			$('#playerone-menu').empty();
-			break;
-		case 'p2menu':
-			$('#playertwo-menu').empty();
-			break;
-	}
-}
-
+// checks to see if X beats Y by comparing their values. returns bool.
 function doesXWinYLose(x, y) {
-	if ((x == 'rock' 	 && 	y == 'scissors') 
-	 || (x == 'scissors' && 	y == 'paper') 
-	 || (x == 'paper' 	 && 	y == 'rock')) {return true;}
+	if ((x == 'Rock' 	 && 	y == 'Scissors') 
+	 || (x == 'Scissors' && 	y == 'Paper') 
+	 || (x == 'Paper' 	 && 	y == 'Rock')) {return true;}
 	else {return false;}
+}
+
+function displayScoreboard() {
+	$('#playerone-scoreboard').html('Wins: ' + playerOne.numWins + ', Losses: ' + playerOne.numLosses);
+	$('#playertwo-scoreboard').html('Wins: ' + playerTwo.numWins + ', Losses: ' + playerTwo.numLosses);
 }
 
 function displayResult(str) {
 	// displays result for set time and then clears it from DOM
 	$('#result-text').html(str);
-	setTimeout(function(){
-		$('#result-text').empty();
-	}, 4000);
 }
+
+function displayTextOnMenu(playerNum, str) {
+	var text = $('<p>');
+	text.addClass('text-center text-info')
+		.css('margin', '30px 0')
+		.css('font-weight', 'bold')		
+		.text(str);
+	if (playerNum == 1) {$('#playerone-menu').html(text);}
+	if (playerNum == 2) {$('#playertwo-menu').html(text);}
+}
+
+
+
+// function resetPlayer(playerNum) {
+// 	switch (playerNum) {
+// 		case 1:
+// 			playerOne = new player("", 1, true, 0, 0, "", false);
+// 			database.ref('activeplayers/playerOne').set(playerOne); // updates database
+// 			$('#player-one').data(playerOne); // updates DOM data
+// 			playerOne = $('#player-one').data(); // ensures variable always references DOM data directly
+// 			break;
+// 		case 2:
+// 			playerTwo = new player("", 2, true, 0, 0, "", false);
+// 			database.ref('activeplayers/playerTwo').set(playerTwo); // updates database
+// 			$('#player-two').data(playerTwo); // updates DOM data
+// 			playerTwo = $('#player-two').data(); // ensures variable always references DOM data directly
+// 			break;
+// 	}
+// }

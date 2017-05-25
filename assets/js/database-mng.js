@@ -15,7 +15,7 @@ var database = firebase.database();
 // database listener for all changes in activeplayers index
 // in database, syncing and initializing in real time
 database.ref('/activeplayers/').on('value', function(snapshot){
-	
+	console.log('value event triggered');
 	// declare p1s and p2s as shorthands for "Player 1 Snapshot" & "Player 2 Snapshot"
 	var p1s = snapshot.child('playerOne');
 	var p2s = snapshot.child('playerTwo');
@@ -27,137 +27,137 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 	// if either playerOne or playerTwo doesn't exist in the database
 	if (!p1s.exists() || !p2s.exists()) {
 		// resets DOM to its initial state by emptying out various divs
-		resetDOMText('all');
-		$('#playerone-btn').empty(); $('#playertwo-btn').empty();
-		// resets playerOne and playerTwo to their initial values, both locally and in database
-		resetPlayer(1);
-		resetPlayer(2);
-		console.log('reseting players');
+		resetDOM(['all']);
+		// resets data to initial values
+		playerOne = resetPlayer(1);
+		playerTwo = resetPlayer(2);
+		updatePlayersOnFirebase([playerOne, playerTwo]);
+		syncDOMData([playerOne, playerTwo]);
+		console.log('playerOne, playerTwo not found. reseting players...');
 	}	
 	else { // wraps below code in an 'else' to avoid redundancy with above code
 		
-		// if playerOne has changed its availability status
+		// if snapshot of p1 has changed its availability status (compared to original local value)
 		if (p1sv.isAvailable !== playerOne.isAvailable) {
 			
-			// if playerOne has become available, reset the values.
+			// if p1 has become available, reset the values.
 			if (p1sv.isAvailable) {
-				resetPlayer(1);
-				resetDOMText('p1main');
-				resetDOMText('p1menu');
-				$('#playerone-btn').empty();
+				resetDOM(['p1main', 'p1menu', 'p1btn']);
+				playerOne = resetPlayer(1);
+				updatePlayersOnFirebase([playerOne]);
+				syncDOMData([playerOne]);
 				console.log('reset p1');
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
 				// sets playerOne equal to the snapshot value
 				playerOne = p1sv;
+				syncDOMData([playerOne]);
 				console.log('p1 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
-
-				// syncs updated player data with player-one div
-				$('#player-one').data(playerOne);
-
-				// reassigns playerOne to ensure it is always a direct reference to the DOM data
-				playerOne = $('#player-one').data();
-
 				// updates player status in its divId
 				printPlayerStatus(playerOne);
 
-				// if playerTwo has also been selected, display weapons
+				// if playerTwo has also been selected, display scoreboard and weapons
 				if (!p2sv.isAvailable) {
 					console.log('displayWeaponsMenu p1');
+					displayScoreboard();
 					displayWeaponsMenu();
 				}
 			}	
 		}
 		
-		// if playerTwo has changed its availability status
+		// if snapshot of p2 has changed its availability status (compared to original local value)
 		if (p2sv.isAvailable !== playerTwo.isAvailable) {
 			
-			// if playerTwo has become available, reset the values.
+			// if p2 has become available, reset the values.
 			if (p2sv.isAvailable) {
-				resetPlayer(2);
-				resetDOMText('p2main');
-				resetDOMText('p2menu');
-				$('#playertwo-btn').empty();
+				resetDOM(['p2main', 'p2menu', 'p2btn']);
+				playerTwo = resetPlayer(2);
+				updatePlayersOnFirebase([playerTwo]);
+				syncDOMData([playerTwo]);
 				console.log('reset p2');
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
-				// sets playerTwo equal to the snapshot
+				// sets playerTwo equal to the snapshot value
 				playerTwo = p2sv;
+				syncDOMData([playerTwo]);
 				console.log('p2 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
-
-				// syncs updated player data with player-two div
-				$('#player-two').data(playerTwo);
-
-				// reassigns playerTwo to ensure it is always a direct reference to the DOM data
-				playerTwo = $('#player-two').data();
-
 				// updates player status in its divId
 				printPlayerStatus(playerTwo);
 
-				// if playerOne has also been selected, display weapons
-				if (!p1sv.isAvailable) {
+				// if playerTwo has also been selected, display scoreboard and weapons
+				if (!p2sv.isAvailable) {
 					console.log('displayWeaponsMenu p2');
+					displayScoreboard();
 					displayWeaponsMenu();
 				}
 			}	
 		}
+		
+		// conditions for determing game result after both players have selected weapons
+		if (p1sv.doesHaveWeapon && p2sv.doesHaveWeapon)	{
+			// declares result as an empty string
+			var result = '';
 
-		if (p1sv.doesHaveWeapon === true) {resetDOMText('p1menu'); console.log('p1:', p1sv.selectedWeapon);}
-		if (p2sv.doesHaveWeapon === true) {resetDOMText('p2menu'); console.log('p2:', p2sv.selectedWeapon);}
-
-		// conditions for checking game result after both players have selected weapons
-		if (p1sv.doesHaveWeapon === true && p2sv.doesHaveWeapon === true )	{
-			// saves these as more manageable variables
+			// saves these snapshot values as more manageable variables
 			var p1choice = p1sv.selectedWeapon;	var p2choice = p2sv.selectedWeapon;			
-			var p1wins = p1sv.numWins;			var p2wins = p1sv.numWins;
+			var p1wins = p1sv.numWins;			var p2wins = p2sv.numWins;
 			var p1losses = p1sv.numLosses;		var p2losses = p2sv.numLosses;
 
-			// resets database values
-			database.ref('/activeplayers/playerOne').child('doesHaveWeapon').set(false);
-			database.ref('/activeplayers/playerTwo').child('doesHaveWeapon').set(false);
-			database.ref('/activeplayers/playerOne').child('selectedWeapon').set('');
-			database.ref('/activeplayers/playerTwo').child('selectedWeapon').set('');
+			// saves choices to global variables to avoid the condition code being performed 
+			// twice. (will update to DOM and firebase after checking win/lose results)
+			playerOne.doesHaveWeapon = false;	playerTwo.doesHaveWeapon = false;
+			playerOne.selectedWeapon = '';		playerTwo.selectedWeapon = '';
 			
-			// check for tie first
+			// checks for tie first
 			if (p1choice == p2choice) {
-				displayResult("It's a tie!");
+				result = "It's a tie!";
 			} else {
 				// if player 1 wins, player 2 loses
 				if (doesXWinYLose(p1choice, p2choice)) {
-					// increments wins and losses
-					p1wins++; p2losses++;
-					// changes number of wins and losses in database
-					database.ref('/activeplayers/playerOne').child('numWins').set(p1wins);
-					database.ref('/activeplayers/playerTwo').child('numLosses').set(p2losses);
-					// display win result
-					displayResult(p1sv.name + ' wins!');
+					p1wins++;
+					p2losses++;
+					result = (playerOne.name + ' wins!');
 				} 
 				else { // if player 2 wins, player 1 loses
-					// increments wins and losses
-					p2wins++; p1losses++;
-					// changes number of wins and losses in database
-					database.ref('/activeplayers/playerTwo').child('numWins').set(p2wins);
-					database.ref('/activeplayers/playerOne').child('numLosses').set(p1losses);
-					// display win result
-					displayResult(p2sv.name + ' wins!');
+					p2wins++;
+					p1losses++;
+					result = (playerTwo.name + ' wins!');
 				}
 			} // end of else
-
-			// always do this after checking and displaying game results
-			displayWeaponsMenu();
-		} // end of 'if' condition checking results.
-		
+			// always perform these functions after checking and displaying game results
+			// saves updated values to local variables
+			playerOne.numWins = p1wins;
+			playerOne.numLosses = p1losses;
+			playerTwo.numWins = p2wins;
+			playerTwo.numLosses = p2losses;
+			// syncs DOM data and firebase data
+			syncDOMData([playerOne, playerTwo]);
+			updatePlayersOnFirebase([playerOne, playerTwo]);
+			// displays scoreboard and result
+			resetDOM(['p1menu', 'p2menu']);
+			displayScoreboard();
+			displayResult(result);
+			// wait 4 seconds before displaying the next weapons menu
+			setTimeout(function(){
+				$('#result-text').empty();
+				displayWeaponsMenu();
+			}, 4000);
+		} // end of 'if' condition checking results
+		else if (p1sv.doesHaveWeapon && !playerTwo.doesHaveWeapon) {
+			displayTextOnMenu(1, 'Weapon selected!');
+			displayResult('Awaiting Player Two input...');
+			console.log('p1:', p1sv.selectedWeapon);
+		} else if (p2sv.doesHaveWeapon && !playerOne.doesHaveWeapon) {
+			displayTextOnMenu(2, 'Weapon selected!');
+			displayResult('Awaiting Player One input...');
+			console.log('p2:', p2sv.selectedWeapon);
+		}	
 	} // end of else wrap
 	// ***END OF INITIAL CHECK
-
-	// sync global playerOne and playerTwo with most up-to-date snapshots to avoid data conflicts
-		// $('#player-one').data(p1s.val());
-		// playerOne = $('#player-one').data();
-
 }); // end of activeplayers database value event listener

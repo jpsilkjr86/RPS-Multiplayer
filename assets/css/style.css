@@ -17,12 +17,15 @@
 	margin: 0 10px;
 	padding: 5px;
 	text-align: center;
-	/*border: 2px solid #ddbbbb;
-	border-radius: 20px;*/
 }
 
 #playerone-menu {float: right;}
 #playertwo-menu {float: left;}
+
+#playerone-scoreboard, #playertwo-scoreboard, #result-text {
+	width: 100%;
+	font-weight: bold;
+}
 
 .leave-game {margin: 5px 13px;}
 
