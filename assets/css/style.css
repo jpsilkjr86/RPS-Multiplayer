@@ -11,6 +11,8 @@
 #player-one {float: left;}
 #player-two {float: right;}
 
+/*#player-one:hover, #player-two:hover {cursor: pointer;}*/
+
 #playerone-menu, #playertwo-menu {
 	width: 100px;
 	min-height: 100px;
@@ -29,7 +31,7 @@
 
 .leave-game {margin: 5px 13px;}
 
-.weapon-choice, .observed-weapon-choice {
+.weapon-choice {
 	margin: 5px auto;
 	padding: 5px 10px;
 	background-color: #7799ee;

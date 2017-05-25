@@ -43,6 +43,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			// if p1 has become available, reset the values.
 			if (p1sv.isAvailable) {
 				resetDOM(['p1main', 'p1menu', 'p1btn']);
+				displayTextOnMenu(1, 'Click player box to join!');
+				displayResult('Waiting for players to join...');
 				playerOne = resetPlayer(1);
 				updatePlayersOnFirebase([playerOne]);
 				syncDOMData([playerOne]);
@@ -52,6 +54,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				// sets playerOne equal to the snapshot value
 				playerOne = p1sv;
 				syncDOMData([playerOne]);
+				displayTextOnMenu(1, 'Player 1 is ready!');
 				console.log('p1 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
@@ -74,6 +77,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			// if p2 has become available, reset the values.
 			if (p2sv.isAvailable) {
 				resetDOM(['p2main', 'p2menu', 'p2btn']);
+				displayTextOnMenu(2, 'Click player box to join!');
+				displayResult('Waiting for players to join...');
 				playerTwo = resetPlayer(2);
 				updatePlayersOnFirebase([playerTwo]);
 				syncDOMData([playerTwo]);
@@ -83,6 +88,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				// sets playerTwo equal to the snapshot value
 				playerTwo = p2sv;
 				syncDOMData([playerTwo]);
+				displayTextOnMenu(2, 'Player 2 is ready!');
 				console.log('p2 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
@@ -92,7 +98,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 
 				// if playerTwo has also been selected, display scoreboard and weapons
 				if (!p2sv.isAvailable) {
-					console.log('displayWeaponsMenu p2');
+					console.log('displayWeaponsMenu p2');					
+					displayResult('Game is on!');
 					displayScoreboard();
 					displayWeaponsMenu();
 				}
@@ -140,12 +147,13 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			syncDOMData([playerOne, playerTwo]);
 			updatePlayersOnFirebase([playerOne, playerTwo]);
 			// displays scoreboard and result
-			resetDOM(['p1menu', 'p2menu']);
+			displayTextOnMenu(1, p1choice);
+			displayTextOnMenu(2, p2choice);
 			displayScoreboard();
 			displayResult(result);
 			// wait 4 seconds before displaying the next weapons menu
 			setTimeout(function(){
-				$('#result-text').empty();
+				displayResult('Game is on!');
 				displayWeaponsMenu();
 			}, 4000);
 		} // end of 'if' condition checking results

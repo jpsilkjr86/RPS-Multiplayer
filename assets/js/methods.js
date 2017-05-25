@@ -6,7 +6,6 @@ function setUserAccess(userAccess) {
 
 // returns the user access permission id
 function getUserAccess() {
-	console.log(sessionStorage.getItem('User Access'));
 	return (sessionStorage.getItem('User Access'));
 }
 
@@ -115,17 +114,16 @@ function displayWeaponsMenu() {
 	// conditionals for displaying data according to user access permissions
 	switch(getUserAccess()) {
 		case 'player1_access':
-			console.log('display p1 menu');
 			$('#playerone-menu').html(getWeaponChoicesDiv('player'));
+			displayTextOnMenu(2, 'Choosing weapon...');
 			break;
 		case 'player2_access':
-			console.log('display p2 menu');
 			$('#playertwo-menu').html(getWeaponChoicesDiv('player'));
+			displayTextOnMenu(1, 'Choosing weapon...');
 			break;
 		case 'observer_access':
-			console.log('display ob menus');
-			$('#playerone-menu').html(getWeaponChoicesDiv('observer'));
-			$('#playertwo-menu').html(getWeaponChoicesDiv('observer'));
+			displayTextOnMenu(1, 'Choosing weapon...');
+			displayTextOnMenu(2, 'Choosing weapon...');
 	}
 }
 
@@ -135,26 +133,14 @@ function getWeaponChoicesDiv(access) {
 	var weaponChoicesDiv = $('<div>');
 
 	var rock = $('<div>');
-	rock.text('Rock').val('Rock').appendTo(weaponChoicesDiv);
+	rock.text('Rock').val('Rock').addClass('weapon-choice').appendTo(weaponChoicesDiv);
 
 	var paper = $('<div>');
-	paper.text('Paper').val('Paper').appendTo(weaponChoicesDiv);
+	paper.text('Paper').val('Paper').addClass('weapon-choice').appendTo(weaponChoicesDiv);
 
 	var scissors = $('<div>');
-	scissors.text('Scissors').val('Scissors').appendTo(weaponChoicesDiv);
+	scissors.text('Scissors').val('Scissors').addClass('weapon-choice').appendTo(weaponChoicesDiv);
 
-	switch (access) {
-		case 'player':
-			rock.addClass('weapon-choice');
-			paper.addClass('weapon-choice');
-			scissors.addClass('weapon-choice');
-			break;
-		case 'observer':
-			rock.addClass('observed-weapon-choice');
-			paper.addClass('observed-weapon-choice');
-			scissors.addClass('observed-weapon-choice');
-			break;
-	}
 	return weaponChoicesDiv;
 }
 
@@ -172,7 +158,6 @@ function displayScoreboard() {
 }
 
 function displayResult(str) {
-	// displays result for set time and then clears it from DOM
 	$('#result-text').html(str);
 }
 
@@ -185,22 +170,3 @@ function displayTextOnMenu(playerNum, str) {
 	if (playerNum == 1) {$('#playerone-menu').html(text);}
 	if (playerNum == 2) {$('#playertwo-menu').html(text);}
 }
-
-
-
-// function resetPlayer(playerNum) {
-// 	switch (playerNum) {
-// 		case 1:
-// 			playerOne = new player("", 1, true, 0, 0, "", false);
-// 			database.ref('activeplayers/playerOne').set(playerOne); // updates database
-// 			$('#player-one').data(playerOne); // updates DOM data
-// 			playerOne = $('#player-one').data(); // ensures variable always references DOM data directly
-// 			break;
-// 		case 2:
-// 			playerTwo = new player("", 2, true, 0, 0, "", false);
-// 			database.ref('activeplayers/playerTwo').set(playerTwo); // updates database
-// 			$('#player-two').data(playerTwo); // updates DOM data
-// 			playerTwo = $('#player-two').data(); // ensures variable always references DOM data directly
-// 			break;
-// 	}
-// }
