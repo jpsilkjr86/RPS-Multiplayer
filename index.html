@@ -74,12 +74,23 @@
               <h4>Chat Room</h3>
             </div>
             <div class="panel-body" id="chat-panel">
+              <!-- divs for wrapping chat box and chat entries -->
               <div class="chat-wrapper">
                 <div class="chat-content"></div>
               </div>
-            </div>
-          </div>
-        </div>
+              <!-- input text field for submitting chat entries -->
+              <div class="form-group form-horizontal input-wrapper">
+                <label for="inputChatMsg" class="control-label col-sm-2" id="chat-label">Label</label>
+                <div class="col-sm-8">
+                  <input class="form-control" type="text" placeholder="Become a player to enable chat!">
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-success btn-sm" id="send-msg">Send</button>
+                </div>
+              </div> <!-- End of Form Group -->
+            </div> <!-- End of Panel-Body -->
+          </div> <!-- End of Panel -->
+        </div> <!-- End of Column -->
       </div> <!-- End of Row -->
     </div> <!--End of Container-->
 
