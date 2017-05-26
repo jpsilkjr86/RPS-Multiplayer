@@ -180,7 +180,7 @@ function displayTextOnMenu(playerNum, str) {
 function appendChatEntry(name, msg) {
 	var chatEntry = $('<div>');
 	chatEntry.addClass('chat-entry')
-			.text('<' + name + '> ' + msg)
+			.html(name + ':&nbsp;&nbsp;' + msg)
 			.appendTo('.chat-content');
 	// keeps the scrollbar set to the very bottom
 	$('.chat-content').scrollTop($('.chat-content')[0].scrollHeight);

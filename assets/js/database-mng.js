@@ -70,7 +70,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 
 				// if playerTwo has also been selected, display scoreboard and weapons
 				if (!p2sv.isAvailable) {
-					console.log('displayWeaponsMenu p1');
+					console.log('displayWeaponsMenu p1');					
+					displayResult('Game is on!');
 					displayScoreboard();
 					displayWeaponsMenu();
 				}
@@ -102,8 +103,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				// updates player status in its divId
 				printPlayerStatus(playerTwo);
 
-				// if playerTwo has also been selected, display scoreboard and weapons
-				if (!p2sv.isAvailable) {
+				// if playerOne has also been selected, display scoreboard and weapons
+				if (!p1sv.isAvailable) {
 					console.log('displayWeaponsMenu p2');					
 					displayResult('Game is on!');
 					displayScoreboard();
