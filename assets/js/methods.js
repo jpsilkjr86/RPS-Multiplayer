@@ -176,5 +176,6 @@ function appendChatEntry(str) {
 	chatEntry.addClass('chat-entry')
 			.text(str)
 			.appendTo('.chat-content');
+	// keeps the scrollbar set to the very bottom
 	$('.chat-content').scrollTop($('.chat-content')[0].scrollHeight);
 }

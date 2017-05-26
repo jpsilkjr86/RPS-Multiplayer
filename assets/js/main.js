@@ -65,10 +65,28 @@ $(document).ready(function(){
 			doesHaveWeapon: true		// <-- changed (new value)
 		});
 	});
+	// event handler for clicking send-msg
+	$('#send-msg').on('click', function(e){
+		// prevents page from reloading
+		e.preventDefault();
+		// captures input value
+		var inputChatMsg = $('#input-chat-msg').val();
+		// clears input field
+		$('#input-chat-msg').val('');
+		// appends to chat screen
+		appendChatEntry(inputChatMsg);
+	});
+	// event handler for pressing ENTER when typing in input-chat-msg
+	$('#input-chat-msg').on('keypress', function(e){
+		// triggers 'click' event by hitting ENTER when typing in input field
+		if (e.which == 13) {
+			$('#send-msg').trigger('click');
+		}
+	});
 
 	// for error checking
 	$(document).keypress(function(e){
-		console.log(e.keyCode);
+		// console.log(e.keyCode);
 
 		if (e.key == '0') {database.ref('playerOne').set({});}
 
