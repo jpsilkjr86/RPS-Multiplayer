@@ -73,23 +73,30 @@ $(document).ready(function(){
 		var inputChatMsg = $('#input-chat-msg').val();
 		// clears input field
 		$('#input-chat-msg').val('');
-		// appends to chat screen
-		appendChatEntry(inputChatMsg);
+
+		if (getUserAccess() !== 'observer_access') {
+			// gets player name
+			var playerName = getPlayerName();
+			// sends data to firebase
+			database.ref('chats').push({
+				name: playerName,
+				msg: inputChatMsg,
+				timestamp: firebase.database.ServerValue.TIMESTAMP
+			});
+		}
 	});
 	// event handler for pressing ENTER when typing in input-chat-msg
 	$('#input-chat-msg').on('keypress', function(e){
 		// triggers 'click' event by hitting ENTER when typing in input field
-		if (e.which == 13) {
-			$('#send-msg').trigger('click');
-		}
+		if (e.which == 13) {$('#send-msg').trigger('click');}
 	});
+
+
+
 
 	// for error checking
 	$(document).keypress(function(e){
 		// console.log(e.keyCode);
-
-		if (e.key == '0') {database.ref('playerOne').set({});}
-
 		if (e.key == 'q') {
 			database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
 				console.log('database:', snapshot.val());
@@ -98,13 +105,8 @@ $(document).ready(function(){
 				console.log('database:', snapshot.val());
 			});
 			console.log('local vars:', playerOne, playerTwo);
-			console.log('DOM data:', $('#player-one').data());
+			console.log('DOM data:', $('#player-one').data(), $('#player-two').data());
 		}	
-
-		if (e.key == 'z') {
-			$('#player-one').data('test', 'testtest');
-			console.log($('#player-one').data());
-		}
 
 		if (e.keyCode === 96) {
 			database.ref('/activeplayers/playerOne').set({});
@@ -114,11 +116,6 @@ $(document).ready(function(){
 
 		if (e.key == '/') {
 			console.log('Your access level is:', getUserAccess());
-		}
-
-		if (e.key == '=') {
-			database.ref('activeplayers/playerOne').child('isAvailable').set(false);
-			console.log('set true');
 		}
 
 		if (e.key == '+') {

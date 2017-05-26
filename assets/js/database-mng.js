@@ -12,6 +12,12 @@ firebase.initializeApp(config);
 // declares a global database variable
 var database = firebase.database();
 
+// database listener for each child added to 'chats'
+database.ref('chats').on('child_added', function(snapshot){
+	var entry = snapshot.val();
+	appendChatEntry(entry.name, entry.msg);
+});
+
 // database listener for all changes in activeplayers index
 // in database, syncing and initializing in real time
 database.ref('/activeplayers/').on('value', function(snapshot){

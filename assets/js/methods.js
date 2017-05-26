@@ -109,6 +109,12 @@ function getPlayerBtnId() {
 	if (getUserAccess() === 'player2_access') {return '#playertwo-btn';}
 }
 
+// returns player's name according to user access
+function getPlayerName() {
+	if (getUserAccess() === 'player1_access') {return playerOne.name;}
+	if (getUserAccess() === 'player2_access') {return playerTwo.name;}
+}
+
 // displays weapon choices according to user access permission
 function displayWeaponsMenu() {
 	// conditionals for displaying data according to user access permissions
@@ -171,10 +177,10 @@ function displayTextOnMenu(playerNum, str) {
 	if (playerNum == 2) {$('#playertwo-menu').html(text);}
 }
 
-function appendChatEntry(str) {
+function appendChatEntry(name, msg) {
 	var chatEntry = $('<div>');
 	chatEntry.addClass('chat-entry')
-			.text(str)
+			.text('<' + name + '> ' + msg)
 			.appendTo('.chat-content');
 	// keeps the scrollbar set to the very bottom
 	$('.chat-content').scrollTop($('.chat-content')[0].scrollHeight);
