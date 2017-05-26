@@ -106,7 +106,7 @@ $(document).ready(function(){
 		if (e.key == '+') {
 			appendChatEntry('entry ' + iterator);
 			iterator++;
-			$('.chat-content')
+			// $('.chat-content')
 		}
 
 	});

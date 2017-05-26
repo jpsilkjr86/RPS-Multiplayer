@@ -176,4 +176,5 @@ function appendChatEntry(str) {
 	chatEntry.addClass('chat-entry')
 			.text(str)
 			.appendTo('.chat-content');
+	$('.chat-content').scrollTop($('.chat-content')[0].scrollHeight);
 }

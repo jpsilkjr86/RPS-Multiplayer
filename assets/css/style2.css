@@ -1,0 +1,23 @@
+
+.leave-game {margin: 5px 13px;}
+
+.weapon-choice {
+	margin: 5px auto;
+	padding: 5px 10px;
+	background-color: #7799ee;
+	border-radius: 10px;
+	color: white;
+	text-shadow: 0 0 3px black;
+	box-shadow: 2px 2px 2px #444444;
+	font-size: 15px;
+}
+
+.weapon-choice:hover {
+	background-color: #449944;
+	cursor: pointer;
+}
+
+.weapon-choice:active {
+	background-color: #ff4444;
+	cursor: pointer;
+}
