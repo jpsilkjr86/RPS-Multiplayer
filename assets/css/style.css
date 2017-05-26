@@ -11,8 +11,6 @@
 #player-one {float: left;}
 #player-two {float: right;}
 
-/*#player-one:hover, #player-two:hover {cursor: pointer;}*/
-
 #playerone-menu, #playertwo-menu {
 	width: 100px;
 	min-height: 100px;
@@ -50,4 +48,20 @@
 .weapon-choice:active {
 	background-color: #ff4444;
 	cursor: pointer;
+}
+
+#chat-box {
+	margin: 0 auto 20px auto;
+	display: table;
+	width: 80%;
+	height: 200px;
+	overflow-y: scroll;
+	border: 2px solid #ccc;
+}
+.chat-entry {
+	display: table-row;
+	vertical-align: bottom;
+	width: 100%;
+	height: auto;
+	border: none;
 }
