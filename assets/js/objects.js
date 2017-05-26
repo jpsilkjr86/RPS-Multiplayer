@@ -13,6 +13,8 @@ function player(name, playerNum, isAvailable, numWins, numLosses, selectedWeapon
 var playerOne = {};
 var playerTwo = {};
 
+var iterator = 0;
+
 /* 
 
 	I. 	User Data {

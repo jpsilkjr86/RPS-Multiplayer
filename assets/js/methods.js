@@ -170,3 +170,10 @@ function displayTextOnMenu(playerNum, str) {
 	if (playerNum == 1) {$('#playerone-menu').html(text);}
 	if (playerNum == 2) {$('#playertwo-menu').html(text);}
 }
+
+function appendChatEntry(str) {
+	var chatEntry = $('<div>');
+	chatEntry.addClass('chat-entry')
+			.text(str)
+			.appendTo('.chat-content');
+}

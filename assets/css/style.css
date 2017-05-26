@@ -50,18 +50,59 @@
 	cursor: pointer;
 }
 
-#chat-box {
-	margin: 0 auto 20px auto;
-	display: table;
-	width: 80%;
-	height: 200px;
-	overflow-y: scroll;
+.chat-wrapper {
+	display: table-cell;
+	vertical-align: bottom;
 	border: 2px solid #ccc;
+	height: 200px;
+}
+.chat-content {
+	max-height: 200px;
+	width: 600px;
+	overflow-y: auto;
 }
 .chat-entry {
-	display: table-row;
-	vertical-align: bottom;
 	width: 100%;
 	height: auto;
-	border: none;
+	border: 1px solid gray;
+}
+
+#chat-panel {
+	padding: 10px 171px;
+}
+
+@media screen and (max-width: 1200px) {
+	#chat-panel {
+		padding: 10px 145px;
+	}
+
+	.chat-content {
+		max-height: 200px;
+		width: 480px;
+		overflow-y: auto;
+	}
+}
+
+@media screen and (max-width: 992px) {
+	#chat-panel {
+		padding: 10px 72px;
+	}
+
+	.chat-content {
+		max-height: 200px;
+		width: 450px;
+		overflow-y: auto;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	#chat-panel {
+		padding: 10px 70px;
+	}
+
+	.chat-content {
+		max-height: 200px;
+		width: 430px;
+		overflow-y: auto;
+	}
 }

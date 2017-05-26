@@ -1,7 +1,6 @@
 // **************************************** MAIN APP FUNCTIONS *****************************************
 
 $(document).ready(function(){
-
 	// sets initial user access to observer
 	setUserAccess('observer_access');
 
@@ -54,7 +53,7 @@ $(document).ready(function(){
 		var thisPlayer = $(getPlayerDivId()).data();
 		// changes html on the weapon menu div so that user can't choose more than one weapon
 		displayTextOnMenu(thisPlayer.playerNum, 'Weapon selected!');
-		
+
 		// packages changes in one lump of data and sends it to firebase
 		database.ref(getDatabaseKey()).set({
 			name: thisPlayer.name,
@@ -102,6 +101,12 @@ $(document).ready(function(){
 		if (e.key == '=') {
 			database.ref('activeplayers/playerOne').child('isAvailable').set(false);
 			console.log('set true');
+		}
+
+		if (e.key == '+') {
+			appendChatEntry('entry ' + iterator);
+			iterator++;
+			$('.chat-content')
 		}
 
 	});
