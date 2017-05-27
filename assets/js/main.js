@@ -17,16 +17,18 @@ $(document).ready(function(){
 				
 				var nameInput = prompt('Please enter a user name.');
 
-				// packages changes in one lump of data and sends it to firebase
-				database.ref(getDatabaseKey()).set({
-					name: nameInput,
-					playerNum: thisPlayer.playerNum,
-					isAvailable: false,
-					numWins: 0,
-					numLosses: 0,
-					selectedWeapon: "",
-					doesHaveWeapon: false
-				});
+				if (nameInput != null){
+					// packages changes in one lump of data and sends it to firebase
+					database.ref(getDatabaseKey()).set({
+						name: nameInput,
+						playerNum: thisPlayer.playerNum,
+						isAvailable: false,
+						numWins: 0,
+						numLosses: 0,
+						selectedWeapon: "",
+						doesHaveWeapon: false
+					});
+				}
 			} else {
 				alert('This player is currently being played by another user.');
 			}

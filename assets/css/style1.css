@@ -2,7 +2,6 @@
 #player-one, #player-two {
 	width: 100px;
 	height: 100px;
-	/*margin: 5 30px;*/
 	padding: 25px 5px;
 	text-align: center;
 	border: 2px solid #bbbbdd;
@@ -12,12 +11,10 @@
 #playerone-wrapper {
 	float: left;
 	margin: 0 30px;
-	border: 1px solid red;
 }
 #playertwo-wrapper {
 	float: right;
 	margin: 0 30px;
-	border: 1px solid red;
 }
 
 #playerone-menu, #playertwo-menu {
