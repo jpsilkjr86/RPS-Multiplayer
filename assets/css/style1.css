@@ -34,4 +34,5 @@
 #playerone-scoreboard, #playertwo-scoreboard, #result-text {
 	width: 100%;
 	font-weight: bold;
+	padding: 0 0 5px 0;
 }
