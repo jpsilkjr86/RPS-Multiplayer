@@ -1,5 +1,7 @@
 
-.leave-game {margin: 5px 13px;}
+.leave-game {
+	margin: 5px 4px;
+}
 
 .weapon-choice {
 	margin: 5px auto;

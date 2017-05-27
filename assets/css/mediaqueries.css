@@ -1,28 +1,35 @@
 /* Media Queries */
 @media only screen and (max-width : 1200px) {
-	#player-one, #player-two, #playerone-menu, #playertwo-menu 
+	#playerone-wrapper, #playertwo-wrapper, #playerone-menu, #playertwo-menu 
 	{margin: 0 10px;}
 }
 
 @media only screen and (max-width : 992px) {
-	#player-one, #player-two, #playerone-menu, #playertwo-menu{
+	#playerone-wrapper, #playertwo-wrapper, #playerone-menu, #playertwo-menu{
 		float: none;
 		margin: auto;
+		overflow: auto;
+	}
+	#player-one, #player-two {
+		margin: auto;
+	}
+	.leave-game {
+		margin: 5px 47px;
 	}
 }
 
 @media only screen and (max-width : 768px) {
-	#player-one, #playertwo-menu {
+	#playerone-wrapper, #playertwo-menu {
 		float: left;
 		margin: 0 10%;
 	}
-	#playerone-menu, #player-two {
+	#playerone-menu, #playertwo-wrapper {
 		float: right;
 		margin: 0 10%;
 	}
 }
 
 @media only screen and (max-width : 480px) {
-	#player-one, #player-two, #playerone-menu, #playertwo-menu
+	#playerone-wrapper, #playertwo-wrapper, #playerone-menu, #playertwo-menu
 	{margin: 0 30px;}
 }
