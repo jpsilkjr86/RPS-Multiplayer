@@ -211,17 +211,11 @@ function toggleChatState(disableState, placeholder) {
 function queryPlayerStatus(playerNum, playerProperty) {
 	var status;
 	if (playerNum == 1) {
-		database.ref('/activeplayers/playerOne/' + playerProperty).once('value').then(function(snapshot){
-			status = snapshot.val();
-			console.log(snapshot.val());
-			return status;
-		});
+		console.log($('#player-one').data(playerProperty));
+		return $('#player-one').data(playerProperty);
 	}
 	if (playerNum == 2) {
-		database.ref('/activeplayers/playerTwo/' + playerProperty).once('value').then(function(snapshot){
-			status = snapshot.val();
-			console.log(snapshot.val());
-			return status;
-		});
+		console.log($('#player-two').data(playerProperty));
+		return $('#player-two').data(playerProperty);
 	}	
 }

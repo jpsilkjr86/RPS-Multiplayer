@@ -54,15 +54,25 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			
 			// if p1 has become available, reset the values.
 			if (p1sv.isAvailable) {
-				clearTimeout(waitForNext); // clears timeout var waitForNext in case it exists
+				// clears timeout var waitForNext in case it exists
+				clearTimeout(waitForNext);
+				// handles DOM
 				resetDOM(['p1main', 'p1menu', 'p1btn', 'p1sb']);
 				displayTextOnMenu(1, 'Click player box to join!');
 				displayResult('Waiting for players to join...');
+				// sets player values
 				playerOne = resetPlayer(1);
-				updatePlayersOnFirebase([playerOne]);
-				syncDOMData([playerOne]);
+				playerTwo.doesHaveWeapon = false; //////// 
+				playerTwo.selectedWeapon = ""; //////// 
+				// syncs data
+				//////// updatePlayersOnFirebase([playerOne]);
+				//////// syncDOMData([playerOne]);
+				updatePlayersOnFirebase([playerOne, playerTwo]); //////// 
+				syncDOMData([playerOne, playerTwo]); //////// 
 				console.log('reset p1');
+				// clears timer
 				timer.clearTimer();
+				// if the other player is ready, make sure to keep this text on display
 				if (!p2sv.isAvailable) {
 					displayTextOnMenu(2, 'Player 2 is ready!');
 				}
@@ -81,8 +91,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 
 				// if playerTwo has also been selected, display scoreboard and weapons
 				if (!p2sv.isAvailable) {
-					console.log('displayWeaponsMenu p1');					
-					displayResult('Game is on!');
+					console.log('displayWeaponsMenu p1');
 					displayScoreboard();
 					displayWeaponsMenu();
 					timer.startTimer();
@@ -95,15 +104,25 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			
 			// if p2 has become available, reset the values.
 			if (p2sv.isAvailable) {
-				clearTimeout(waitForNext); // clears timeout var waitForNext in case it exists
+				// clears timeout var waitForNext in case it exists
+				clearTimeout(waitForNext);
+				// handles DOM
 				resetDOM(['p2main', 'p2menu', 'p2btn', 'p2sb']);
 				displayTextOnMenu(2, 'Click player box to join!');
 				displayResult('Waiting for players to join...');
+				// sets player values
 				playerTwo = resetPlayer(2);
-				updatePlayersOnFirebase([playerTwo]);
-				syncDOMData([playerTwo]);
+				playerOne.doesHaveWeapon = false; //////// 
+				playerOne.selectedWeapon = ""; //////// 
+				// syncs data
+				//////// updatePlayersOnFirebase([playerTwo]);
+				//////// syncDOMData([playerTwo]);
+				updatePlayersOnFirebase([playerOne, playerTwo]); //////// 
+				syncDOMData([playerOne, playerTwo]); //////// 
 				console.log('reset p2');
+				// clears timer
 				timer.clearTimer();
+				// if the other player is ready, make sure to keep this text on display
 				if (!p1sv.isAvailable) {
 					displayTextOnMenu(1, 'Player 1 is ready!');
 				}
@@ -122,8 +141,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 
 				// if playerOne has also been selected, display scoreboard and weapons
 				if (!p1sv.isAvailable) {
-					console.log('displayWeaponsMenu p2');					
-					displayResult('Game is on!');
+					console.log('displayWeaponsMenu p2');
 					displayScoreboard();
 					displayWeaponsMenu();
 					timer.startTimer();
@@ -180,16 +198,19 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			displayResult(result);
 			// wait 4 seconds before displaying the next weapons menu
 			waitForNext = setTimeout(function(){
-				displayResult('Game is on!');
 				displayWeaponsMenu();				
 				timer.startTimer();
 			}, 4000);
 		} // end of 'if' condition checking results
 		else if (p1sv.doesHaveWeapon && !playerTwo.doesHaveWeapon) {
+			// playerOne.doesHaveWeapon = true;
+			// syncDOMData([playerOne]);
 			displayTextOnMenu(1, 'Weapon selected!');
 			displayResult('Awaiting Player Two input...');
 			console.log('p1:', p1sv.selectedWeapon);
 		} else if (p2sv.doesHaveWeapon && !playerOne.doesHaveWeapon) {
+			// playerTwo.doesHaveWeapon = true;
+			// syncDOMData([playerTwo]);
 			displayTextOnMenu(2, 'Weapon selected!');
 			displayResult('Awaiting Player One input...');
 			console.log('p2:', p2sv.selectedWeapon);

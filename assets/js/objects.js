@@ -19,10 +19,11 @@ var timerInterval;
 
 // declares timer object (for setting player timeout functionality)
 var timer = {
-	timeRemaining: 8,
-	initialTime: 8,
+	timeRemaining: 20,
+	initialTime: 20,
 	startTimer: function(){
-		console.log('timer started');
+		console.log('timer started');					
+		displayResult('Game is on!');
 		timer.timeRemaining = timer.initialTime;
 		timer.countdown();
 	},
@@ -47,18 +48,24 @@ var timer = {
 		clearInterval(timerInterval);
 		resetDOM(['p1menu', 'p2menu']);
 		displayResult("Time's up. Removing inactive players...");
-		var doesP1HaveWeapon = queryPlayerStatus(1, 'doesHaveWeapon');
-		var doesP2HaveWeapon = queryPlayerStatus(2, 'doesHaveWeapon');
-		console.log(doesP1HaveWeapon, doesP2HaveWeapon);
+		// declares variables whos values will become equal to the snapshots of the database queries
+		var doesP1HaveWeapon;
+		var doesP2HaveWeapon;
+		// queries database for 
+		database.ref('activeplayers/playerOne/doesHaveWeapon').once('value').then(function(snapshot){
+			doesP1HaveWeapon = snapshot.val();
+			console.log(doesP1HaveWeapon);
+		});
+		database.ref('activeplayers/playerOne/doesHaveWeapon').once('value').then(function(snapshot){
+			doesP1HaveWeapon = snapshot.val();
+			console.log(doesP1HaveWeapon);
+		});
+		// clears the timer after 
 		setTimeout(function(){
 			timer.clearTimer();
 			// triggers click on "Exit Game" buttons if players are inactive
-			if(!doesP1HaveWeapon) {
-				$('#playerone-btn').find('.leave-game').trigger('click');
-			}
-			if(!doesP1HaveWeapon) {
-				$('#playertwo-btn').find('.leave-game').trigger('click');
-			}
+			if(!doesP1HaveWeapon) {$('#playerone-btn').find('.leave-game').trigger('click');}
+			if(!doesP2HaveWeapon) {$('#playertwo-btn').find('.leave-game').trigger('click');}
 		}, 4000);
 	}
 }
