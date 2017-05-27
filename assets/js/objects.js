@@ -56,9 +56,9 @@ var timer = {
 			doesP1HaveWeapon = snapshot.val();
 			console.log(doesP1HaveWeapon);
 		});
-		database.ref('activeplayers/playerOne/doesHaveWeapon').once('value').then(function(snapshot){
-			doesP1HaveWeapon = snapshot.val();
-			console.log(doesP1HaveWeapon);
+		database.ref('activeplayers/playerTwo/doesHaveWeapon').once('value').then(function(snapshot){
+			doesP2HaveWeapon = snapshot.val();
+			console.log(doesP2HaveWeapon);
 		});
 		// clears the timer after 
 		setTimeout(function(){
