@@ -11,13 +11,13 @@ $(document).ready(function(){
 		if (getUserAccess() === 'observer_access') {
 			
 			if (thisPlayer.isAvailable) {
-				// sets user access in local storage 
-				setUserAccess('player' + thisPlayer.playerNum + '_access');
-				toggleChatState();
-				
+				// gets name via prompt (would like to upgrade to modals if project time allows)
 				var nameInput = prompt('Please enter a user name.');
-
+				// if user enters non-empty string
 				if (nameInput != null){
+					// sets user access in local storage 
+					setUserAccess('player' + thisPlayer.playerNum + '_access');
+					toggleChatState();
 					// packages changes in one lump of data and sends it to firebase
 					database.ref(getDatabaseKey()).set({
 						name: nameInput,
@@ -98,9 +98,8 @@ $(document).ready(function(){
 
 
 
-	// for error checking
+	// <---------- FOR ERROR CHECKING ---------->
 	$(document).keypress(function(e){
-		// console.log(e.keyCode);
 		if (e.key == 'q') {
 			database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
 				console.log('database:', snapshot.val());
@@ -111,7 +110,7 @@ $(document).ready(function(){
 			console.log('local vars:', playerOne, playerTwo);
 			console.log('DOM data:', $('#player-one').data(), $('#player-two').data());
 		}	
-
+		// if user presses ` key
 		if (e.keyCode === 96) {
 			database.ref('/activeplayers/playerOne').set({});
 			database.ref('/activeplayers/playerTwo').set({});
@@ -122,12 +121,5 @@ $(document).ready(function(){
 		if (e.key == '/') {
 			console.log('Your access level is:', getUserAccess());
 		}
-
-		if (e.key == '+') {
-			appendChatEntry('entry ' + iterator);
-			iterator++;
-			// $('.chat-content')
-		}
-
 	});
 }); // end of document ready

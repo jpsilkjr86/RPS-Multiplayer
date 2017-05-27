@@ -62,6 +62,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerOne]);
 				syncDOMData([playerOne]);
 				console.log('reset p1');
+				timer.clearTimer();
 				if (!p2sv.isAvailable) {
 					displayTextOnMenu(2, 'Player 2 is ready!');
 				}
@@ -84,6 +85,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 					displayResult('Game is on!');
 					displayScoreboard();
 					displayWeaponsMenu();
+					timer.startTimer();
 				}
 			}	
 		}
@@ -101,6 +103,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerTwo]);
 				syncDOMData([playerTwo]);
 				console.log('reset p2');
+				timer.clearTimer();
 				if (!p1sv.isAvailable) {
 					displayTextOnMenu(1, 'Player 1 is ready!');
 				}
@@ -123,12 +126,15 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 					displayResult('Game is on!');
 					displayScoreboard();
 					displayWeaponsMenu();
+					timer.startTimer();
 				}
 			}	
 		}
 		
 		// conditions for determing game result after both players have selected weapons
 		if (p1sv.doesHaveWeapon && p2sv.doesHaveWeapon)	{
+			// clears timer right away
+			timer.clearTimer();
 			// declares result as an empty string
 			var result = '';
 
@@ -175,7 +181,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			// wait 4 seconds before displaying the next weapons menu
 			waitForNext = setTimeout(function(){
 				displayResult('Game is on!');
-				displayWeaponsMenu();
+				displayWeaponsMenu();				
+				timer.startTimer();
 			}, 4000);
 		} // end of 'if' condition checking results
 		else if (p1sv.doesHaveWeapon && !playerTwo.doesHaveWeapon) {

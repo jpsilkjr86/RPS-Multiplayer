@@ -206,3 +206,22 @@ function toggleChatState(disableState, placeholder) {
 			 .attr('placeholder', 'Chat enabled!');
 	}	
 }
+
+// gets a specific value from the database
+function queryPlayerStatus(playerNum, playerProperty) {
+	var status;
+	if (playerNum == 1) {
+		database.ref('/activeplayers/playerOne/' + playerProperty).once('value').then(function(snapshot){
+			status = snapshot.val();
+			console.log(snapshot.val());
+			return status;
+		});
+	}
+	if (playerNum == 2) {
+		database.ref('/activeplayers/playerTwo/' + playerProperty).once('value').then(function(snapshot){
+			status = snapshot.val();
+			console.log(snapshot.val());
+			return status;
+		});
+	}	
+}
