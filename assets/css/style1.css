@@ -2,7 +2,7 @@
 #player-one, #player-two {
 	width: 100px;
 	height: 100px;
-	margin: 10px;
+	margin: 0 30px;
 	padding: 25px 5px;
 	text-align: center;
 	border: 2px solid #bbbbdd;
@@ -15,7 +15,7 @@
 #playerone-menu, #playertwo-menu {
 	width: 100px;
 	min-height: 100px;
-	margin: 0 10px;
+	margin: 0 30px;
 	padding: 5px;
 	text-align: center;
 }
