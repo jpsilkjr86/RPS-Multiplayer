@@ -195,6 +195,6 @@ function toggleChatState(disableState, placeholder) {
 	}
 	else {
 		input.removeAttr('disabled')
-			 .attr('placeholder', 'Input message here.');
+			 .attr('placeholder', 'Chat enabled!');
 	}	
 }

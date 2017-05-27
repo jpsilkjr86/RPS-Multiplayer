@@ -57,7 +57,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerOne]);
 				syncDOMData([playerOne]);
 				console.log('reset p1');
-				toggleChatState();
+				// toggleChatState();
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
 				// sets playerOne equal to the snapshot value
@@ -65,7 +65,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerOne]);
 				displayTextOnMenu(1, 'Player 1 is ready!');
 				console.log('p1 value updated');
-				toggleChatState();
+				// toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -94,7 +94,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerTwo]);
 				syncDOMData([playerTwo]);
 				console.log('reset p2');
-				toggleChatState();
+				// toggleChatState();
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
 				// sets playerTwo equal to the snapshot value
@@ -102,7 +102,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerTwo]);
 				displayTextOnMenu(2, 'Player 2 is ready!');
 				console.log('p2 value updated');
-				toggleChatState();
+				// toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();

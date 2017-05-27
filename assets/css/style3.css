@@ -1,8 +1,7 @@
 
 .input-wrapper {
-	width: 90%;
+	width: 80%;
 	margin: auto;
-	overflow: visible;
 }
 
 /* Looked up this method on stack overflow: https://stackoverflow.com/questions/20627807/jquery-chat-box-show-first-messages-at-bottom-of-div-moving-up
