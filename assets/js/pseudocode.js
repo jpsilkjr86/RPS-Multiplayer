@@ -1,7 +1,7 @@
 // ********************************************** PSEUDO-CODE **********************************************
 /* 
 
-Pseudo-Code: First Draft of Pseudo-Code
+Pseudo-Code: First Draft of Pseudo-Code (about 5/19/2017)
 
 TITLE: Rock Paper Scissors Multi-player
 

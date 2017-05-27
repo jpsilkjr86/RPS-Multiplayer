@@ -211,11 +211,9 @@ function toggleChatState(disableState, placeholder) {
 function queryPlayerStatus(playerNum, playerProperty) {
 	var status;
 	if (playerNum == 1) {
-		console.log($('#player-one').data(playerProperty));
 		return $('#player-one').data(playerProperty);
 	}
 	if (playerNum == 2) {
-		console.log($('#player-two').data(playerProperty));
 		return $('#player-two').data(playerProperty);
 	}	
 }

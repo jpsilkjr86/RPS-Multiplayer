@@ -82,7 +82,6 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				playerOne = p1sv;
 				syncDOMData([playerOne]);
 				displayTextOnMenu(1, 'Player 1 is ready!');
-				console.log('p1 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -112,13 +111,11 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				displayResult('Waiting for players to join...');
 				// sets player values
 				playerTwo = resetPlayer(2);
-				playerOne.doesHaveWeapon = false; //////// 
-				playerOne.selectedWeapon = ""; //////// 
+				playerOne.doesHaveWeapon = false; 
+				playerOne.selectedWeapon = ""; 
 				// syncs data
-				//////// updatePlayersOnFirebase([playerTwo]);
-				//////// syncDOMData([playerTwo]);
-				updatePlayersOnFirebase([playerOne, playerTwo]); //////// 
-				syncDOMData([playerOne, playerTwo]); //////// 
+				updatePlayersOnFirebase([playerOne, playerTwo]); 
+				syncDOMData([playerOne, playerTwo]); 
 				console.log('reset p2');
 				// clears timer
 				timer.clearTimer();
@@ -132,7 +129,6 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				playerTwo = p2sv;
 				syncDOMData([playerTwo]);
 				displayTextOnMenu(2, 'Player 2 is ready!');
-				console.log('p2 value updated');
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -202,18 +198,18 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				timer.startTimer();
 			}, 4000);
 		} // end of 'if' condition checking results
-		else if (p1sv.doesHaveWeapon && !playerTwo.doesHaveWeapon) {
+		else if (p1sv.doesHaveWeapon && !playerTwo.doesHaveWeapon 
+			&& !playerOne.isAvailable && !playerTwo.isAvailable) {
 			// playerOne.doesHaveWeapon = true;
 			// syncDOMData([playerOne]);
 			displayTextOnMenu(1, 'Weapon selected!');
 			displayResult('Awaiting Player Two input...');
-			console.log('p1:', p1sv.selectedWeapon);
-		} else if (p2sv.doesHaveWeapon && !playerOne.doesHaveWeapon) {
+		} else if (p2sv.doesHaveWeapon && !playerOne.doesHaveWeapon
+			&& !playerOne.isAvailable && !playerTwo.isAvailable) {
 			// playerTwo.doesHaveWeapon = true;
 			// syncDOMData([playerTwo]);
 			displayTextOnMenu(2, 'Weapon selected!');
 			displayResult('Awaiting Player One input...');
-			console.log('p2:', p2sv.selectedWeapon);
 		}	
 	} // end of else wrap
 	// ***END OF INITIAL CHECK

@@ -100,16 +100,16 @@ $(document).ready(function(){
 
 	// <---------- FOR ERROR CHECKING ---------->
 	$(document).keypress(function(e){
-		if (e.key == 'q') {
-			database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
-				console.log('database:', snapshot.val());
-			});
-			database.ref('/activeplayers/playerTwo').once('value').then(function(snapshot){
-				console.log('database:', snapshot.val());
-			});
-			console.log('local vars:', playerOne, playerTwo);
-			console.log('DOM data:', $('#player-one').data(), $('#player-two').data());
-		}	
+		// if (e.key == 'q') {
+		// 	database.ref('/activeplayers/playerOne').once('value').then(function(snapshot){
+		// 		console.log('database:', snapshot.val());
+		// 	});
+		// 	database.ref('/activeplayers/playerTwo').once('value').then(function(snapshot){
+		// 		console.log('database:', snapshot.val());
+		// 	});
+		// 	console.log('local vars:', playerOne, playerTwo);
+		// 	console.log('DOM data:', $('#player-one').data(), $('#player-two').data());
+		// }	
 		// if user presses ` key
 		if (e.keyCode === 96) {
 			database.ref('/activeplayers/playerOne').set({});
