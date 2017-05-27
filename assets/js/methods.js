@@ -34,7 +34,9 @@ function updatePlayersOnFirebase(playerAry) {
 // clears or resets DOM data according to arry of string arguments.
 function resetDOM(ary) {
 	// if the argument is an array with initial value 'all', declare array as all cases.
-	if (ary[0] == 'all') {ary = ['p1main', 'p2main', 'p1menu', 'p2menu', 'p1btn', 'p2btn'];}
+	if (ary[0] == 'all') {
+		ary = ['p1main', 'p2main', 'p1menu', 'p2menu', 'p1btn', 'p2btn', 'p1sb', 'p2sb'];
+	}
 	// for loop that iterates through array and performs switch cases
 	for (i = 0; i < ary.length; i++) {
 		switch (ary[i]) {
@@ -55,6 +57,12 @@ function resetDOM(ary) {
 				break;
 			case 'p2btn':
 				$('#playertwo-btn').empty();
+				break;
+			case 'p1sb':
+				$('#playerone-scoreboard').empty();
+				break;
+			case 'p2sb':
+				$('#playertwo-scoreboard').empty();
 				break;
 		} // end of switch
 	} // end of for loop

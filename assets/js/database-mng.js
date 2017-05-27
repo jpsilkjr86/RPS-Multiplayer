@@ -18,6 +18,10 @@ database.ref('chats').on('child_added', function(snapshot){
 	appendChatEntry(entry.name, entry.msg);
 });
 
+// declares timeout variable for when setTimeout occurs later 
+// (happens between matches when results are being displayed)
+var waitForNext;
+
 // database listener for all changes in activeplayers index
 // in database, syncing and initializing in real time
 database.ref('/activeplayers/').on('value', function(snapshot){
@@ -50,14 +54,17 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			
 			// if p1 has become available, reset the values.
 			if (p1sv.isAvailable) {
-				resetDOM(['p1main', 'p1menu', 'p1btn']);
+				clearTimeout(waitForNext); // clears timeout var waitForNext in case it exists
+				resetDOM(['p1main', 'p1menu', 'p1btn', 'p1sb']);
 				displayTextOnMenu(1, 'Click player box to join!');
 				displayResult('Waiting for players to join...');
 				playerOne = resetPlayer(1);
 				updatePlayersOnFirebase([playerOne]);
 				syncDOMData([playerOne]);
 				console.log('reset p1');
-				// toggleChatState();
+				if (!p2sv.isAvailable) {
+					displayTextOnMenu(2, 'Player 2 is ready!');
+				}
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
 				// sets playerOne equal to the snapshot value
@@ -65,7 +72,6 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerOne]);
 				displayTextOnMenu(1, 'Player 1 is ready!');
 				console.log('p1 value updated');
-				// toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -87,14 +93,17 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			
 			// if p2 has become available, reset the values.
 			if (p2sv.isAvailable) {
-				resetDOM(['p2main', 'p2menu', 'p2btn']);
+				clearTimeout(waitForNext); // clears timeout var waitForNext in case it exists
+				resetDOM(['p2main', 'p2menu', 'p2btn', 'p2sb']);
 				displayTextOnMenu(2, 'Click player box to join!');
 				displayResult('Waiting for players to join...');
 				playerTwo = resetPlayer(2);
 				updatePlayersOnFirebase([playerTwo]);
 				syncDOMData([playerTwo]);
 				console.log('reset p2');
-				// toggleChatState();
+				if (!p1sv.isAvailable) {
+					displayTextOnMenu(1, 'Player 1 is ready!');
+				}
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
 				// sets playerTwo equal to the snapshot value
@@ -102,7 +111,6 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerTwo]);
 				displayTextOnMenu(2, 'Player 2 is ready!');
 				console.log('p2 value updated');
-				// toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -165,7 +173,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 			displayScoreboard();
 			displayResult(result);
 			// wait 4 seconds before displaying the next weapons menu
-			setTimeout(function(){
+			waitForNext = setTimeout(function(){
 				displayResult('Game is on!');
 				displayWeaponsMenu();
 			}, 4000);
