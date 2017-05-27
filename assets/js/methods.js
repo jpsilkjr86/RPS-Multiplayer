@@ -185,3 +185,16 @@ function appendChatEntry(name, msg) {
 	// keeps the scrollbar set to the very bottom
 	$('.chat-content').scrollTop($('.chat-content')[0].scrollHeight);
 }
+
+function toggleChatState(disableState, placeholder) {
+	var input = $('#input-chat-msg');
+
+	if (getUserAccess() === 'observer_access') {
+		input.attr('disabled', 'disabled')
+			 .attr('placeholder', 'Become a player to enable chat!');
+	}
+	else {
+		input.removeAttr('disabled')
+			 .attr('placeholder', 'Input message here.');
+	}	
+}

@@ -40,6 +40,8 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 		updatePlayersOnFirebase([playerOne, playerTwo]);
 		syncDOMData([playerOne, playerTwo]);
 		console.log('playerOne, playerTwo not found. reseting players...');
+		setUserAccess('observer_access');
+		toggleChatState();
 	}	
 	else { // wraps below code in an 'else' to avoid redundancy with above code
 		
@@ -55,6 +57,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerOne]);
 				syncDOMData([playerOne]);
 				console.log('reset p1');
+				toggleChatState();
 			} 
 			else { // if playerOne has become unavailable, i.e. has been selected
 				// sets playerOne equal to the snapshot value
@@ -62,6 +65,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerOne]);
 				displayTextOnMenu(1, 'Player 1 is ready!');
 				console.log('p1 value updated');
+				toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();
@@ -90,6 +94,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				updatePlayersOnFirebase([playerTwo]);
 				syncDOMData([playerTwo]);
 				console.log('reset p2');
+				toggleChatState();
 			} 
 			else { // if playerTwo has become unavailable, i.e. has been selected
 				// sets playerTwo equal to the snapshot value
@@ -97,6 +102,7 @@ database.ref('/activeplayers/').on('value', function(snapshot){
 				syncDOMData([playerTwo]);
 				displayTextOnMenu(2, 'Player 2 is ready!');
 				console.log('p2 value updated');
+				toggleChatState();
 
 				// adds button for leaving game, visibile only to the user who selected the player
 				printLeaveGameBtn();

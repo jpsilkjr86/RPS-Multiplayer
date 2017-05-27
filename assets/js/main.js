@@ -13,6 +13,7 @@ $(document).ready(function(){
 			if (thisPlayer.isAvailable) {
 				// sets user access in local storage 
 				setUserAccess('player' + thisPlayer.playerNum + '_access');
+				toggleChatState();
 				
 				var nameInput = prompt('Please enter a user name.');
 
@@ -43,6 +44,7 @@ $(document).ready(function(){
 
 		// resets user access level to observer
 		setUserAccess('observer_access');
+		toggleChatState();
 	});
 
 	// click event listener for weapon-choice
@@ -111,6 +113,7 @@ $(document).ready(function(){
 		if (e.keyCode === 96) {
 			database.ref('/activeplayers/playerOne').set({});
 			database.ref('/activeplayers/playerTwo').set({});
+			database.ref('chats').set({});
 			setUserAccess('observer_access');
 		}
 
