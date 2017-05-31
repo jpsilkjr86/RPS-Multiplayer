@@ -95,6 +95,11 @@ $(document).ready(function(){
 		if (e.which == 13) {$('#send-msg').trigger('click');}
 	});
 
+	// event handler for unload (closing page, refreshing...)
+	$(window).on('unload', function(){
+		// triggers 'click' event on leave-game btn
+		$(document).find('.leave-game').trigger('click');
+	});
 
 
 
